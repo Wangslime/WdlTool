@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net46;net6.0</TargetFrameworks>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Title>通过DispatchProxy动态代理加特性来实现。使用非常方便，继承FilterAttribute特性，标注FilterType => "BEFORE","AFTER","EXCEPTION"即可食用</Title>
+	  <Authors>王定龙</Authors>
+	  <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reflection.DispatchProxy" Version="4.7.1" />
+  </ItemGroup>
+</Project>
