@@ -1,4 +1,4 @@
-﻿using WdlReflectionAOP;
+﻿using WdlProxyAOP;
 
 namespace TestController
 {
