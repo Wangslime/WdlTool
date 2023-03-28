@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net46;net6.0</TargetFrameworks>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <Title>通过DispatchProxy动态代理加特性来实现。使用非常方便，继承FilterAttribute特性，标注FilterType =&gt; "BEFORE","AFTER","EXCEPTION"即可食用</Title>
+	  <Title>通过DispatchProxy动态代理加特性来实现。使用非常方便，通过订阅SubscribeAopBeFore，SubscribeAopAfter，SubscribeAopException这三个方法就可以实现添加的对应的特性的方法的AOP</Title>
 	  <Authors>王定龙</Authors>
-	  <Version>1.0.0</Version>
+	  <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
