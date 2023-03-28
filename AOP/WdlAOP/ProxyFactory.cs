@@ -14,7 +14,7 @@ namespace WdlProxyAOP
             return Process(_Instance, targetMethod, args);
         }
 
-        public object Process(T instance, MethodInfo targetMethod, params object[] args)
+        private object Process(T instance, MethodInfo targetMethod, params object[] args)
         {
             object execResult = null;
 
@@ -40,9 +40,9 @@ namespace WdlProxyAOP
             List<FilterAttribute> exceptionFilters = new List<FilterAttribute>();
             if (filters != null && filters.Count() > 0)
             {
-                execBeforeFilters = filters.Where(f => f.FilterType == "BEFORE").ToList();
-                execAfterFilters = filters.Where(f => f.FilterType == "AFTER").ToList();
-                exceptionFilters = filters.Where(f => f.FilterType == "EXCEPTION").ToList();
+                execBeforeFilters = filters.Where(f => f.FilterType == FilterType.BEFORE).ToList();
+                execAfterFilters = filters.Where(f => f.FilterType == FilterType.AFTER).ToList();
+                exceptionFilters = filters.Where(f => f.FilterType == FilterType.EXCEPTION).ToList();
             }
             try
             {
