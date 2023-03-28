@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>netstandard2.0;net452;net6.0</TargetFrameworks>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Title>引用命名控件之后就可以直接使用各种DataSet，DataTable，List，Json，Dictionary等各种扩展方法</Title>
+	  <Authors>王定龙</Authors>
+	  <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+</Project>
