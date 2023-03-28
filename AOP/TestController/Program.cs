@@ -20,7 +20,6 @@ namespace TestController
             }
             catch (Exception ex)
             {
-                ex.ToExString();
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"发生错误：{ex.Message}");
                 Console.ResetColor();
