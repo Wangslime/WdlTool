@@ -62,5 +62,23 @@ namespace WdlProxyAOP
         {
             Instance.ExceptionExecuted += action;
         }
+        public static void UnSubscribeAopBeFore(Action<object, MethodInfo> action)
+        {
+            Instance.BeForeExecuted -= action;
+        }
+        public static void UnbscribeAopAfter(Action<object, MethodInfo, object> action)
+        {
+            Instance.AfterExecuted -= action;
+        }
+        public static void UnbscribeAopException(Action<object, MethodInfo, Exception> action)
+        {
+            Instance.ExceptionExecuted -= action;
+        }
+        public static void UnbscribeAll()
+        {
+            Instance.BeForeExecuted = null;
+            Instance.AfterExecuted = null;
+            Instance.ExceptionExecuted = null;
+        }
     }
 }
