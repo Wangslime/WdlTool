@@ -1,8 +1,11 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlSocketTcp
 {
     /// <summary>
     /// 自定义Socket对象
@@ -10,13 +13,13 @@ namespace CommonCommunication
     public class SocketsTcpClient
     {
         private Socket? socketClient = null;
-        private byte[] buffer => new byte[1024*1024];
+        private byte[] buffer => new byte[1024];
 
         public event Func<string, string>? ReceiveEventMsg;
         public event Action<Exception>? LogError;
 
         CancellationTokenSource cts = new CancellationTokenSource();
-        public bool OpenConnect(string ip = "127.0.0.1", int port = 13000)
+        public bool Start(string ip = "127.0.0.1", int port = 13000)
         {
             //1 创建Socket对象
             socketClient?.Disconnect(true);

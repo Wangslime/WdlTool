@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Net.WebSockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlWebSocket
 {
     public class WebSocketClient
     {
-        public event Func<string, string>? ReceiveEventMsg;
-        private ClientWebSocket? webSocket = null;
+        public event Func<string, string> ReceiveEventMsg;
+        private ClientWebSocket webSocket = null;
         private CancellationTokenSource cts = new CancellationTokenSource();
-        private ArraySegment<byte> buffer = new byte[1024 * 1024];
+        private ArraySegment<byte> buffer = new ArraySegment<byte>(new byte[1024]);
         public bool Start(string url, int timeout = 3000)
         {
             //开始连接---------------------------------------------
@@ -60,7 +62,7 @@ namespace CommonCommunication
         public async Task SendAsync(string data)
         {
             //发送---------------------------------------------
-            byte[] buffer = Encoding.UTF8.GetBytes(data);
+            ArraySegment<byte> buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(data));
             if (webSocket != null && webSocket.State != WebSocketState.Closed)
             {
                 try
@@ -71,7 +73,6 @@ namespace CommonCommunication
                      , true
                      , CancellationToken.None)
                      .ConfigureAwait(false);//不需要回到await前的线程
-
                 }
                 catch (Exception)
                 {
@@ -93,7 +94,7 @@ namespace CommonCommunication
         public void Send(string data)
         {
             //发送---------------------------------------------
-            byte[] buffer = Encoding.UTF8.GetBytes(data);
+            ArraySegment<byte> buffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(data));
             if (webSocket != null && webSocket.State != WebSocketState.Closed)
             {
                 try

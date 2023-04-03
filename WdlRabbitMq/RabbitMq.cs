@@ -1,12 +1,14 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlRabbitMq
 {
-    public class RabbitMqSend
+    public class RabbitMq
     {
-        public event Func<string, string>? ReceiveEventMsg;
+        public event Func<string, string> ReceiveEventMsg;
         public string taskQueue = "task_queue";
         ConnectionFactory connectionFactory = new ConnectionFactory();
 
@@ -20,6 +22,13 @@ namespace CommonCommunication
             {
                 this.taskQueue = taskQueue;
             }
+            Task.Run(()=>
+            {
+                while (true)
+                {
+                    Receive();
+                }
+            });
             return true;
         }
 
@@ -46,7 +55,7 @@ namespace CommonCommunication
                     BasicGetResult result = channel.BasicGet(taskQueue, true);
                     if (result != null)
                     {
-                        string? data = Encoding.UTF8.GetString(result.Body.ToArray());
+                        string data = Encoding.UTF8.GetString(result.Body.ToArray());
                         data = ReceiveEventMsg?.Invoke(data);
                         if (!string.IsNullOrEmpty(data))
                         {

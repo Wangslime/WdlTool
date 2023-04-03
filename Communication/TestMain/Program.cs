@@ -1,5 +1,4 @@
-﻿using CommonCommunication;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Text;
 
 namespace TestMainClient
@@ -10,8 +9,9 @@ namespace TestMainClient
         static async Task Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
+            
 
-
+            while (true) {Thread.Sleep(1000);}
             #region WebSocketClient
             //WebSocketClient webSocketClient = new WebSocketClient();
             //webSocketClient.ReceiveEventMsg += OnReceiveEventMsg;

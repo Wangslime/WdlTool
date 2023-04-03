@@ -1,7 +1,11 @@
 ﻿using Confluent.Kafka;
+using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlKafkaAdaptor
 {
     public class KafkaConsumers
     {

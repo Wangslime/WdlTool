@@ -1,9 +1,12 @@
-﻿using System.Net.Sockets;
-using System.Net;
-using System.Text;
+﻿using System;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlSocketTcp
 {
     public class AsyncTcpClient
     {
@@ -319,8 +322,8 @@ namespace CommonCommunication
         /// <summary>
         /// 当前场桥动态数据
         /// </summary>
-        private byte[]? m_receiveByte = null;
-        public byte[]? receiveByte
+        private byte[] m_receiveByte = null;
+        public byte[] receiveByte
         {
             get
             {

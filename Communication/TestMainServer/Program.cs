@@ -1,6 +1,4 @@
-﻿using CommonCommunication;
-
-namespace TestMainServer
+﻿namespace TestMainServer
 {
     internal class Program
     {

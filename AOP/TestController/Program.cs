@@ -52,22 +52,22 @@ namespace TestController
     {
         public AopExecuted()
         {
-            AopEvent<ClassInterface>.SubscribeAopBeFore(OnAopBeFore);
-            AopEvent<ClassInterface>.SubscribeAopAfter(OnAopAfter);
-            AopEvent<ClassInterface>.SubscribeAopException(OnException);
+            AopEvent<ClassInterface>.Instance.BeForeExecuted += OnAopBeFore;
+            AopEvent<ClassInterface>.Instance.AfterExecuted += OnAopAfter;
+            AopEvent<ClassInterface>.Instance.ExceptionExecuted += OnException;
         }
 
-        private void OnException(object arg1, MethodInfo arg2, Exception arg3)
+        private void OnException(ClassInterface arg1, MethodInfo arg2, Exception arg3)
         {
             
         }
 
-        private void OnAopAfter(object arg1, MethodInfo arg2, object arg3)
+        private void OnAopAfter(ClassInterface arg1, MethodInfo arg2, object arg3)
         {
             
         }
 
-        private void OnAopBeFore(object arg1, MethodInfo arg2)
+        private void OnAopBeFore(ClassInterface arg1, MethodInfo arg2)
         {
             
         }

@@ -1,9 +1,12 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlSocketTcp
 {
     /// <summary>
     /// 自定义Socket对象
@@ -93,7 +96,7 @@ namespace CommonCommunication
                 try
                 {
                     //定义byte数组存放从客户端接收过来的数据
-                    byte[] buffer = new byte[1024 * 1024];
+                    byte[] buffer = new byte[1024];
                     int n = clientSocket.Receive(buffer);//将接收过来的数据放到buffer中，并返回实际接受数据的长度
                     if (n == 0)
                     {

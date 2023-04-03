@@ -2,9 +2,13 @@
 using MQTTnet.Client;
 using MQTTnet.Packets;
 using MQTTnet.Protocol;
+using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlMqttAdaptor
 {
     public class MqttNetClient
     {
@@ -43,9 +47,9 @@ namespace CommonCommunication
         private MqttClient mqttClient;
         //ClientId，同SessionId性质一样，是客户端的身份识别唯一标识
 
-        public event Action<string>? LogEvent;
-        public event Action<Exception>? LogError;
-        public event Func<string, string>? ResivemsgEvent;
+        public event Action<string> LogEvent;
+        public event Action<Exception> LogError;
+        public event Func<string, string> ResivemsgEvent;
 
         public async Task Start(CancellationToken token)
         {
@@ -101,7 +105,7 @@ namespace CommonCommunication
             //订阅内容
             try
             {
-                string? Payload = Encoding.Default.GetString(arg.ApplicationMessage.Payload);
+                string Payload = Encoding.Default.GetString(arg.ApplicationMessage.Payload);
                 LogEvent?.Invoke($"===订阅消息：{arg.ClientId}内容:{Payload}===");
                 Payload = ResivemsgEvent?.Invoke(Payload);
                 if (!string.IsNullOrEmpty(Payload))

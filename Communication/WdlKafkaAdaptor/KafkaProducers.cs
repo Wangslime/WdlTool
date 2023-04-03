@@ -1,7 +1,8 @@
 ﻿using Confluent.Kafka;
-using System.Diagnostics;
+using System;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlKafkaAdaptor
 {
     public class KafkaProducers
     {

@@ -1,16 +1,17 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CommonCommunication
+namespace WdlWebSocket
 {
     public class WebSocketServer
     {
-        public event Func<string, string>? ReceiveEventMsg;
-        public event Action<string>? ConnictEvent;
+        public event Func<string, string> ReceiveEventMsg;
+        public event Action<string> ConnictEvent;
         private ConcurrentDictionary<string, Session> SessionPool = new ConcurrentDictionary<string, Session>();
         public int listenCount = 20;
         #region 启动WebSocket服务

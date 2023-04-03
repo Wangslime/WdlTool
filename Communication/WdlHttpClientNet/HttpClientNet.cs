@@ -1,18 +1,21 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
-namespace CommonCommunication
+namespace WdlHttpClientNet
 {
-    public class MyHttpClient
+    public class HttpClientNet
     {
         private static readonly object LockObj = new object();
-        private static HttpClient? httpClient = null;
-        public MyHttpClient()
+        private static HttpClient httpClient = null;
+        public HttpClientNet()
         {
             GetInstance();
         }
 
-        public MyHttpClient(int timeout)
+        public HttpClientNet(int timeout)
         {
             GetInstance(timeout);
         }
