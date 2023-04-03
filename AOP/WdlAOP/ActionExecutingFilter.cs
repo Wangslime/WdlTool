@@ -6,9 +6,9 @@ namespace WdlProxyAOP
     {
         internal override FilterType FilterType => FilterType.BEFORE;
 
-        internal override void Execute(object instance, MethodInfo methodInfo, object result)
+        internal override void Execute<T>(T instance, MethodInfo methodInfo, object result)
         {
-            AopEvent.InvokeBeForeExecuted(instance, methodInfo);
+            AopEvent<T>.InvokeBeForeExecuted(instance, methodInfo);
         }
     }
 }

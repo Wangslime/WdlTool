@@ -7,10 +7,14 @@ namespace TestController
     {
         static void Main(string[] args)
         {
-            new AopExecuted();
-            AopEvent.SubscribeAopBeFore(OnAopBeFore);
-            AopEvent.SubscribeAopAfter(OnAopAfter);
-            AopEvent.SubscribeAopException(OnException);
+            //new AopExecuted();
+            //AopEvent.SubscribeAopBeFore(OnAopBeFore);
+            //AopEvent.SubscribeAopAfter(OnAopAfter);
+            //AopEvent.SubscribeAopException(OnException);
+
+            AopEvent<ClassInterface>.Instance.BeForeExecuted += OnAopBeFore;
+            AopEvent<ClassInterface>.Instance.AfterExecuted += OnAopAfter;
+            AopEvent<ClassInterface>.Instance.ExceptionExecuted += OnException;
             try
             {
                 ClassInterface Class1 = new Class1();
@@ -28,17 +32,17 @@ namespace TestController
             Console.ReadKey();
         }
 
-        private static void OnException(object arg1, MethodInfo arg2, Exception arg3)
+        private static void OnAopBeFore(ClassInterface arg1, MethodInfo arg2)
         {
             
         }
 
-        private static void OnAopAfter(object arg1, MethodInfo arg2, object arg3)
+        private static void OnAopAfter(ClassInterface arg1, MethodInfo arg2, object arg3)
         {
             
         }
 
-        private static void OnAopBeFore(object arg1, MethodInfo arg2)
+        private static void OnException(ClassInterface arg1, MethodInfo arg2, Exception arg3)
         {
             
         }
@@ -48,9 +52,9 @@ namespace TestController
     {
         public AopExecuted()
         {
-            AopEvent.SubscribeAopBeFore(OnAopBeFore);
-            AopEvent.SubscribeAopAfter(OnAopAfter);
-            AopEvent.SubscribeAopException(OnException);
+            AopEvent<ClassInterface>.SubscribeAopBeFore(OnAopBeFore);
+            AopEvent<ClassInterface>.SubscribeAopAfter(OnAopAfter);
+            AopEvent<ClassInterface>.SubscribeAopException(OnException);
         }
 
         private void OnException(object arg1, MethodInfo arg2, Exception arg3)
@@ -76,8 +80,6 @@ namespace TestController
     }
 
     [ActionErrorFilter]
-    [ActionExecutedFilter]
-    [ActionExecutingFilter]
     public class Class1: ClassInterface
     {
         public int Add()
@@ -85,6 +87,8 @@ namespace TestController
             return 1;
         }
 
+        [ActionExecutedFilter]
+        [ActionExecutingFilter]
         public void TestError()
         { 
             throw new Exception("TestError");

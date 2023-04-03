@@ -69,7 +69,7 @@ namespace CommonCommunication
                 }
                 finally
                 { 
-                    await Task.Delay(1000, cts.Token);
+                    await Task.Delay(200, cts.Token);
                 }
             }
         }
@@ -106,12 +106,13 @@ namespace CommonCommunication
         /// <summary>
         /// 给服务器发消息
         /// </summary>
-        public void SendMsg(string msg)
+        public bool SendMsg(string msg)
         {
             if (socketClient != null && socketClient.Connected)
             {
-                socketClient.Send(Encoding.UTF8.GetBytes(msg));
+                return socketClient.Send(Encoding.UTF8.GetBytes(msg)) > 0;
             }
+            return false;
         }
     }
 }

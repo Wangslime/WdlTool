@@ -48,7 +48,7 @@ namespace WdlProxyAOP
             {
                 if (execBeforeFilters != null && execBeforeFilters.Count > 0)
                 {
-                    execBeforeFilters.ForEach(f => f.Execute(instance, targetMethod, null));
+                    execBeforeFilters.ForEach(f => f.Execute<T>(instance, targetMethod, null));
                 }
                 var mParams = targetMethod.GetParameters();
                 object[] newArgs = new object[args.Length];
@@ -59,14 +59,14 @@ namespace WdlProxyAOP
                 execResult = targetMethod.Invoke(instance, newArgs);
                 if (execBeforeFilters != null && execBeforeFilters.Count > 0)
                 {
-                    execAfterFilters.ForEach(f => f.Execute(instance, targetMethod, execResult));
+                    execAfterFilters.ForEach(f => f.Execute<T>(instance, targetMethod, execResult));
                 }
             }
             catch (Exception ex)
             {
                 if (exceptionFilters != null && exceptionFilters.Count > 0)
                 {
-                    exceptionFilters.ForEach(f => f.Execute(instance, targetMethod, ex));
+                    exceptionFilters.ForEach(f => f.Execute<T>(instance, targetMethod, ex));
                 }
             }
             return execResult;

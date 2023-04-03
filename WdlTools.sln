@@ -25,11 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExtendPublic", "Extend\Exte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Communication", "Communication", "{DDDDEFD0-D4E5-4645-B765-E781C6FBEAF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebService", "Communication\WebService\WebService.csproj", "{745CEF32-1269-42DF-8DB3-BF94D9453FC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebService", "Communication\WebService\WebService.csproj", "{745CEF32-1269-42DF-8DB3-BF94D9453FC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonCommunication", "Communication\CommonCommunication\CommonCommunication.csproj", "{CF867565-EA11-4983-ADA9-B54E10C9950D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonCommunication", "Communication\CommonCommunication\CommonCommunication.csproj", "{CF867565-EA11-4983-ADA9-B54E10C9950D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMain", "Communication\TestMain\TestMain.csproj", "{8E459739-AF9E-437A-AAC4-5C6921D3D2AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMainClient", "Communication\TestMain\TestMainClient.csproj", "{8E459739-AF9E-437A-AAC4-5C6921D3D2AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMainServer", "Communication\TestMainServer\TestMainServer.csproj", "{D523E993-1BBB-42AA-BE4B-AC1FE376B2E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{8E459739-AF9E-437A-AAC4-5C6921D3D2AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E459739-AF9E-437A-AAC4-5C6921D3D2AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E459739-AF9E-437A-AAC4-5C6921D3D2AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D523E993-1BBB-42AA-BE4B-AC1FE376B2E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D523E993-1BBB-42AA-BE4B-AC1FE376B2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D523E993-1BBB-42AA-BE4B-AC1FE376B2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D523E993-1BBB-42AA-BE4B-AC1FE376B2E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +98,7 @@ Global
 		{745CEF32-1269-42DF-8DB3-BF94D9453FC3} = {DDDDEFD0-D4E5-4645-B765-E781C6FBEAF3}
 		{CF867565-EA11-4983-ADA9-B54E10C9950D} = {DDDDEFD0-D4E5-4645-B765-E781C6FBEAF3}
 		{8E459739-AF9E-437A-AAC4-5C6921D3D2AD} = {DDDDEFD0-D4E5-4645-B765-E781C6FBEAF3}
+		{D523E993-1BBB-42AA-BE4B-AC1FE376B2E7} = {DDDDEFD0-D4E5-4645-B765-E781C6FBEAF3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C976706-ECEF-4603-A3C0-CDA7BAF2A33E}
