@@ -12,11 +12,11 @@ namespace WdlSocketTcp
     /// </summary>
     public class SocketsTcpClient
     {
-        private Socket? socketClient = null;
+        private Socket socketClient = null;
         private byte[] buffer => new byte[1024];
 
-        public event Func<string, string>? ReceiveEventMsg;
-        public event Action<Exception>? LogError;
+        public event Func<string, string> ReceiveEventMsg;
+        public event Action<Exception> LogError;
 
         CancellationTokenSource cts = new CancellationTokenSource();
         public bool Start(string ip = "127.0.0.1", int port = 13000)
@@ -86,7 +86,7 @@ namespace WdlSocketTcp
                 try
                 {
                     int receiveLen = socketClient.Receive(buffer);
-                    string? receiveMsg = Encoding.UTF8.GetString(buffer, 0, receiveLen);
+                    string receiveMsg = Encoding.UTF8.GetString(buffer, 0, receiveLen);
                     //Console.WriteLine(string.Format("收到服务器消息:" + receiveMsg));
                     receiveMsg = ReceiveEventMsg?.Invoke(receiveMsg);
                     if (!string.IsNullOrEmpty(receiveMsg)) 

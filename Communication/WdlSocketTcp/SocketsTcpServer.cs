@@ -13,10 +13,10 @@ namespace WdlSocketTcp
     /// </summary>
     public class SocketsTcpServer
     {
-        public event Func<string?, string?>? ReceiveClientMsg;
-        public event Action<string>? ClientConnect;
-        public event Action<string>? ClientDisConnect;
-        public event Action<Exception>? LogError;
+        public event Func<string, string> ReceiveClientMsg;
+        public event Action<string> ClientConnect;
+        public event Action<string> ClientDisConnect;
+        public event Action<Exception> LogError;
         public void Close()
         {
             foreach (var item in dic.Values)
@@ -107,7 +107,7 @@ namespace WdlSocketTcp
                     else 
                     {
                         //将字节转换成字符串
-                        string? words = Encoding.UTF8.GetString(buffer, 0, n);
+                        string words = Encoding.UTF8.GetString(buffer, 0, n);
                         //Console.WriteLine(clientSocket.RemoteEndPoint.ToString() + ":" + words);
                         //byte[] msg = Encoding.UTF8.GetBytes(words);
                         words = ReceiveClientMsg?.Invoke(words);
