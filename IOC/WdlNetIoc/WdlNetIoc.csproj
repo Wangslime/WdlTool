@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>netstandard2.0;net452;net6.0</TargetFrameworks>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Title>简易IOC框架，使用反射实现IOC容器，可以通过构造函数和属性两种方式注入</Title>
+	  <Authors>王定龙</Authors>
+	  <Version>1.0.1</Version>
+  </PropertyGroup>
+
+</Project>

@@ -16,7 +16,7 @@ namespace WdlProxyAOP
                 {
                     lock (locked)
                     {
-                        if (Instance == null)
+                        if (_Instance == null)
                         {
                             _Instance = new AopEvent<T>();
                         }

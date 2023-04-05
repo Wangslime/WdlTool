@@ -5,7 +5,7 @@
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>引用命名控件之后就可以直接使用各种DataSet，DataTable，List，Json，Dictionary等各种扩展方法</Title>
 	  <Authors>王定龙</Authors>
-	  <Version>3.0.2</Version>
+	  <Version>3.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
