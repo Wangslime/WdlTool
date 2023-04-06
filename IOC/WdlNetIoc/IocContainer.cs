@@ -108,40 +108,36 @@ namespace WdlNetIoc
         {
             object retObj = null;
             #region 构造函数注入
+            ConstructorInfo[] constructorInfos = type.GetConstructors();
+            ConstructorInfo constructorInfo;// = constructorInfos?.MaxBy(p => p.GetParameters().Length);
+            if (constructorInfos.Any(p => p.IsDefined(typeof(IocConstructorAttribute), true)))
             {
-                ConstructorInfo[] constructorInfos = type.GetConstructors();
-                ConstructorInfo constructorInfo;// = constructorInfos?.MaxBy(p => p.GetParameters().Length);
-                if (constructorInfos.Any(p => p.IsDefined(typeof(IocConstructorAttribute), true)))
-                {
-                    constructorInfo = constructorInfos?.FirstOrDefault(p => p.IsDefined(typeof(IocConstructorAttribute), true));
-                }
-                else
-                {
-                    constructorInfo = constructorInfos?.OrderByDescending(p=> p.GetParameters().Length).First();
-                }
-                List<object> paramsList = new List<object>();
-                foreach (ParameterInfo parameterInfo in constructorInfo?.GetParameters())
-                {
-                    Type parameter = parameterInfo.ParameterType;
-                    Type parameterType = dicIocContainer[parameter.FullName].TypeValue;
-                    object paramerObj = PrivateGetService(parameterType);
-                    paramsList.Add(paramerObj);
-                }
-                retObj = dicIocContainer[type.FullName].GetService(paramsList.ToArray());
+                constructorInfo = constructorInfos?.FirstOrDefault(p => p.IsDefined(typeof(IocConstructorAttribute), true));
             }
+            else
+            {
+                constructorInfo = constructorInfos?.OrderByDescending(p => p.GetParameters().Length).First();
+            }
+            List<object> paramsList = new List<object>();
+            foreach (ParameterInfo parameterInfo in constructorInfo?.GetParameters())
+            {
+                Type parameter = parameterInfo.ParameterType;
+                Type parameterType = dicIocContainer[parameter.FullName].TypeValue;
+                object paramerObj = PrivateGetService(parameterType);
+                paramsList.Add(paramerObj);
+            }
+            retObj = dicIocContainer[type.FullName].GetService(paramsList.ToArray());
             #endregion
 
             #region 属性注入
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
-                foreach (PropertyInfo propertyInfo in type.GetProperties())
+                Type property = propertyInfo.PropertyType;
+                if (dicIocContainer.ContainsKey(property.FullName))
                 {
-                    Type property = propertyInfo.PropertyType;
-                    if (dicIocContainer.ContainsKey(property.FullName))
-                    {
-                        Type propertyType = dicIocContainer[property.FullName].TypeValue;
-                        object paramerObj = PrivateGetService(propertyType);
-                        propertyInfo.SetValue(retObj, paramerObj, null);
-                    }
+                    Type propertyType = dicIocContainer[property.FullName].TypeValue;
+                    object paramerObj = PrivateGetService(propertyType);
+                    propertyInfo.SetValue(retObj, paramerObj, null);
                 }
             }
             #endregion
