@@ -8,12 +8,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace WdlNetIoc
 {
-    public class IocContainer
+    public class IocProvider
     {
         #region 单例模式
         private static readonly object locked = new object();
-        private static IocContainer _Instance = null;
-        private static IocContainer Instance
+        private static IocProvider _Instance = null;
+        private static IocProvider Instance
         {
             get
             {
@@ -23,7 +23,7 @@ namespace WdlNetIoc
                     {
                         if (_Instance == null)
                         {
-                            _Instance = new IocContainer();
+                            _Instance = new IocProvider();
                         }
                     }
                 }
@@ -39,11 +39,11 @@ namespace WdlNetIoc
         }
         #endregion
 
-        public static IocContainer CreateIocContainer()
+        public static IocProvider CreateIocProvider()
         { 
             return Instance;
         }
-        private IocContainer() { }
+        private IocProvider() { }
 
         private ConcurrentDictionary<string, ServiceDescriptor> dicIocContainer = new ConcurrentDictionary<string, ServiceDescriptor>();
 
@@ -142,17 +142,6 @@ namespace WdlNetIoc
             }
             #endregion
             return retObj;
-        }
-
-        internal static T CreateDeepCopy<T>(T obj)
-        {
-            T t;
-            MemoryStream memoryStream = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(memoryStream, obj);
-            memoryStream.Position = 0;
-            t = (T)formatter.Deserialize(memoryStream);
-            return t;
         }
     }
 }

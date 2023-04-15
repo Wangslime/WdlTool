@@ -123,9 +123,9 @@ namespace WdlEventBus
             EventData<T> eventData = new EventData<T>();
             Publish(eventData);
         }
-        public static void Publish<T>(string methodName)
+        public static void Publish<T>(string eventName)
         {
-            EventData<T> eventData = new EventData<T>() {MethodName = methodName };
+            EventData<T> eventData = new EventData<T>() { EventName = eventName };
             Publish(eventData);
         }
         public static void Publish<T>(T t)
@@ -133,9 +133,19 @@ namespace WdlEventBus
             EventData<T> eventData = new EventData<T>() { Data = t };
             Publish(eventData);
         }
-        public static void Publish<T>(string methodName, T t)
+        public static void Publish<T>(string eventName, T t)
         {
-            EventData<T> eventData = new EventData<T>() { MethodName = methodName, Data = t };
+            EventData<T> eventData = new EventData<T>() { EventName = eventName, Data = t };
+            Publish(eventData);
+        }
+        public static void Publish<T>(string methodName, string eventName)
+        {
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName };
+            Publish(eventData);
+        }
+        public static void Publish<T>(string methodName, string eventName, T t)
+        {
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName, Data = t };
             Publish(eventData);
         }
         public static void Publish<T>(EventData<T> eventData)
@@ -180,9 +190,9 @@ namespace WdlEventBus
             EventData<T> eventData = new EventData<T>();
             return PublishResult(eventData);
         }
-        public static List<object> PublishResult<T>(string methodName)
+        public static List<object> PublishResult<T>(string eventName)
         {
-            EventData<T> eventData = new EventData<T>() { MethodName = methodName };
+            EventData<T> eventData = new EventData<T>() { EventName = eventName };
             return PublishResult(eventData);
         }
         public static List<object> PublishResult<T>(T t)
@@ -190,9 +200,19 @@ namespace WdlEventBus
             EventData<T> eventData = new EventData<T>() { Data = t };
             return PublishResult(eventData);
         }
-        public static List<object> PuPublishResultblish<T>(string methodName, T t)
+        public static List<object> PublishResult<T>(string eventName, T t)
         {
-            EventData<T> eventData = new EventData<T>() { MethodName = methodName, Data = t };
+            EventData<T> eventData = new EventData<T>() { EventName = eventName, Data = t };
+            return PublishResult(eventData);
+        }
+        public static List<object> PublishResult<T>(string methodName, string eventName)
+        {
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName };
+            return PublishResult(eventData);
+        }
+        public static List<object> PublishResult<T>(string methodName, string eventName, T t)
+        {
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName, Data = t };
             return PublishResult(eventData);
         }
         public static List<object> PublishResult<T>(EventData<T> eventData)
@@ -239,9 +259,9 @@ namespace WdlEventBus
             EventData<T> eventData = new EventData<T>();
             return PublishAsync(eventData);
         }
-        public static Task PublishAsync<T>(string methodName)
+        public static Task PublishAsync<T>(string eventName)
         {
-            EventData<T> eventData = new EventData<T>() { MethodName = methodName };
+            EventData<T> eventData = new EventData<T>() { EventName = eventName };
             return PublishAsync(eventData);
         }
         public static Task PublishAsync<T>(T t)
@@ -249,9 +269,19 @@ namespace WdlEventBus
             EventData<T> eventData = new EventData<T>() { Data = t };
             return PublishAsync(eventData);
         }
-        public static Task PublishAsync<T>(string methodName, T t)
+        public static Task PublishAsync<T>(string eventName, T t)
         {
-            EventData<T> eventData = new EventData<T>() { MethodName = methodName, Data = t };
+            EventData<T> eventData = new EventData<T>() { EventName = eventName, Data = t };
+            return PublishAsync(eventData);
+        }
+        public static Task PublishAsync<T>(string methodName, string eventName)
+        {
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName };
+            return PublishAsync(eventData);
+        }
+        public static Task PublishAsync<T>(string methodName, string eventName, T t)
+        {
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName, Data = t };
             return PublishAsync(eventData);
         }
         public static Task PublishAsync<T>(EventData<T> eventData)
@@ -260,7 +290,7 @@ namespace WdlEventBus
         }
         private Task PrivatePublishAsync<T>(EventData<T> eventData)
         {
-            Task task = Task.Run(()=> true);
+            Task task = Task.Run(() => true);
             Type type = typeof(T);
             if (dicEventType.ContainsKey(type))
             {
@@ -298,9 +328,9 @@ namespace WdlEventBus
             EventData<T> eventData = new EventData<T>();
             return PublishResultAsync(eventData);
         }
-        public static Task PublishResultAsync<T>(string methodName)
+        public static Task PublishResultAsync<T>(string eventName)
         {
-            EventData<T> eventData = new EventData<T>() { MethodName = methodName };
+            EventData<T> eventData = new EventData<T>() { EventName = eventName };
             return PublishResultAsync(eventData);
         }
         public static Task PublishResultAsync<T>(T t)
@@ -311,6 +341,16 @@ namespace WdlEventBus
         public static Task PublishResultAsync<T>(string methodName, T t)
         {
             EventData<T> eventData = new EventData<T>() { MethodName = methodName, Data = t };
+            return PublishResultAsync(eventData);
+        }
+        public static Task PublishResultAsync<T>(string methodName, string eventName)
+        {
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName };
+            return PublishResultAsync(eventData);
+        }
+        public static Task PublishResultAsync<T>(string methodName, string eventName, T t)
+        {
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName, Data = t };
             return PublishResultAsync(eventData);
         }
         public static Task<List<object>> PublishResultAsync<T>(EventData<T> eventData)
@@ -433,15 +473,24 @@ namespace WdlEventBus
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="eventData"></param>
-
         public static void Publish(string methodName)
         {
             EventData eventData = new EventData() { MethodName = methodName };
             Publish(eventData);
         }
+        public static void Publish(string methodName, string eventName)
+        {
+            EventData eventData = new EventData() { EventName = eventName, MethodName = methodName };
+            Publish(eventData);
+        }
         public static void Publish(string methodName, object data)
         {
             EventData eventData = new EventData() { MethodName = methodName, Data = data };
+            Publish(eventData);
+        }
+        public static void Publish(string methodName, string eventName, object data)
+        {
+            EventData eventData = new EventData() { EventName = eventName, MethodName = methodName, Data = data };
             Publish(eventData);
         }
         public static void Publish(EventData eventData)
@@ -488,6 +537,16 @@ namespace WdlEventBus
         public static void PublishResult(string methodName, object data)
         {
             EventData eventData = new EventData() { MethodName = methodName, Data = data };
+            PublishResult(eventData);
+        }
+        public static void PublishResult(string methodName, string eventName)
+        {
+            EventData eventData = new EventData() { MethodName = methodName, EventName = eventName };
+            PublishResult(eventData);
+        }
+        public static void PublishResult(string methodName, string eventName, object data)
+        {
+            EventData eventData = new EventData() { MethodName = methodName, EventName = eventName, Data = data };
             PublishResult(eventData);
         }
         public static List<object> PublishResult(EventData eventData)
@@ -538,6 +597,16 @@ namespace WdlEventBus
             EventData eventData = new EventData() { MethodName = methodName, Data = data };
             return PublishAsync(eventData);
         }
+        public static Task PublishAsync(string methodName, string eventName)
+        {
+            EventData eventData = new EventData() { MethodName = methodName, EventName = eventName };
+            return PublishAsync(eventData);
+        }
+        public static Task PublishAsync(string methodName, string eventName, object data)
+        {
+            EventData eventData = new EventData() { MethodName = methodName, EventName = eventName, Data = data };
+            return PublishAsync(eventData);
+        }
         public static Task PublishAsync(EventData eventData)
         {
             return Instance.PrivatePublishAsync(eventData);
@@ -582,6 +651,16 @@ namespace WdlEventBus
         public static Task<List<object>> PublishResultAsync(string methodName, object data)
         {
             EventData eventData = new EventData() { MethodName = methodName, Data = data };
+            return PublishResultAsync(eventData);
+        }
+        public static Task<List<object>> PublishResultAsync(string methodName, string eventName)
+        {
+            EventData eventData = new EventData() { MethodName = methodName, EventName = eventName };
+            return PublishResultAsync(eventData);
+        }
+        public static Task<List<object>> PublishResultAsync(string methodName, string eventName, object data)
+        {
+            EventData eventData = new EventData() { MethodName = methodName, EventName = eventName, Data = data };
             return PublishResultAsync(eventData);
         }
         public static Task<List<object>> PublishResultAsync(EventData eventData)

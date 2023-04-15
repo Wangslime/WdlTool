@@ -11,7 +11,37 @@ namespace ExtendPublic
     public static class ExtendDataSet
     {
         #region 添加INTRESULT或者GSRESULT表
-        public static DataSet GetInterSult(this DataSet ds, string code = "0", string msg = "", string tableName = "INTRESULT")
+        public static DataSet GetIntResult(this DataSet ds, string tableName = "INTRESULT")
+        {
+            if (ds.IsDataSetEmpty()) return ds;
+            if (ds.Tables.Contains(tableName))
+            {
+                ds.Tables.Remove(tableName);
+            }
+            DataTable dt = new DataTable();
+            dt.TableName = tableName;
+            dt.Columns.Add("CODE");
+            dt.Columns.Add("MSG");
+            dt.Rows.Add("0", "");
+            ds.Tables.Add(dt);
+            return ds;
+        }
+        public static DataSet GetIntResult(this DataSet ds, string msg, string tableName = "INTRESULT")
+        {
+            if (ds.IsDataSetEmpty()) return ds;
+            if (ds.Tables.Contains(tableName))
+            {
+                ds.Tables.Remove(tableName);
+            }
+            DataTable dt = new DataTable();
+            dt.TableName = tableName;
+            dt.Columns.Add("CODE");
+            dt.Columns.Add("MSG");
+            dt.Rows.Add(string.IsNullOrEmpty(msg) ? "0" : "-1", msg);
+            ds.Tables.Add(dt);
+            return ds;
+        }
+        public static DataSet GetIntResult(this DataSet ds, string code, string msg, string tableName = "INTRESULT")
         {
             if (ds.IsDataSetEmpty()) return ds;
             if (ds.Tables.Contains(tableName))
@@ -26,7 +56,7 @@ namespace ExtendPublic
             ds.Tables.Add(dt);
             return ds;
         }
-        public static DataSet GetInterSult(this DataSet ds, string msg = "", string tableName = "INTRESULT")
+        public static DataSet GetIntResult(this DataSet ds, long code, string msg, string tableName = "INTRESULT")
         {
             if (ds.IsDataSetEmpty()) return ds;
             if (ds.Tables.Contains(tableName))
@@ -37,12 +67,44 @@ namespace ExtendPublic
             dt.TableName = tableName;
             dt.Columns.Add("CODE");
             dt.Columns.Add("MSG");
-            dt.Rows.Add(string.IsNullOrEmpty(msg) ? "0" : "-1", msg);
+            dt.Rows.Add(code.ToString(), msg);
             ds.Tables.Add(dt);
             return ds;
         }
 
-        public static DataSet GetGsSult(this DataSet ds, string code = "0", string msg = "", string tableName = "GSRESULT")
+
+
+        public static DataSet GetGsResult(this DataSet ds, string tableName = "GSRESULT")
+        {
+            if (ds.IsDataSetEmpty()) return ds;
+            if (ds.Tables.Contains(tableName))
+            {
+                ds.Tables.Remove(tableName);
+            }
+            DataTable dt = new DataTable();
+            dt.TableName = tableName;
+            dt.Columns.Add("CODE");
+            dt.Columns.Add("MSG");
+            dt.Rows.Add("0", "");
+            ds.Tables.Add(dt);
+            return ds;
+        }
+        public static DataSet GetGsResult(this DataSet ds, string msg, string tableName = "GSRESULT")
+        {
+            if (ds.IsDataSetEmpty()) return ds;
+            if (ds.Tables.Contains(tableName))
+            {
+                ds.Tables.Remove(tableName);
+            }
+            DataTable dt = new DataTable();
+            dt.TableName = tableName;
+            dt.Columns.Add("CODE");
+            dt.Columns.Add("MSG");
+            dt.Rows.Add(string.IsNullOrEmpty(msg) ? "0" : "-1", msg);
+            ds.Tables.Add(dt);
+            return ds;
+        }
+        public static DataSet GetGsResult(this DataSet ds, string code, string msg, string tableName = "GSRESULT")
         {
             if (ds.IsDataSetEmpty()) return ds;
             if (ds.Tables.Contains(tableName))
@@ -57,7 +119,7 @@ namespace ExtendPublic
             ds.Tables.Add(dt);
             return ds;
         }
-        public static DataSet GetGsSult(this DataSet ds, string msg = "", string tableName = "GSRESULT")
+        public static DataSet GetGsResult(this DataSet ds, long code, string msg, string tableName = "GSRESULT")
         {
             if (ds.IsDataSetEmpty()) return ds;
             if (ds.Tables.Contains(tableName))
@@ -68,9 +130,94 @@ namespace ExtendPublic
             dt.TableName = tableName;
             dt.Columns.Add("CODE");
             dt.Columns.Add("MSG");
-            dt.Rows.Add(string.IsNullOrEmpty(msg) ? "0" : "-1", msg);
+            dt.Rows.Add(code.ToString(), msg);
             ds.Tables.Add(dt);
             return ds;
+        }
+
+        public static void GetGsResultDt(ref DataSet dsOut, string dtName = "GSRESULT")
+        {
+            string command = string.Empty;
+            string guid = string.Empty;
+            if (dsOut.Tables.Contains(dtName))
+            {
+                dsOut.Tables.Remove(dtName);
+            }
+            Dictionary<string, string> dicResult = new Dictionary<string, string>
+            {
+                { "CODE", "0" },
+                { "MSG", "" },
+                { "COMMAND", command },
+                { "GUID", guid },
+                { "TIME", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff") }
+            };
+            DicToDataTable(ref dsOut, dtName, dicResult);
+        }
+        public static void GetGsResultDt(ref DataSet dsOut, DataSet dsIn, string code, string msg, string dtName = "GSRESULT")
+        {
+            string command = string.Empty;
+            string guid = string.Empty;
+            if (dsOut.Tables.Contains(dtName))
+            {
+                dsOut.Tables.Remove(dtName);
+            }
+            if (dsIn.Tables.Contains("GSCOMMAND"))
+            {
+                DataTable dt = dsIn.Tables["GSCOMMAND"];
+                if (dt.Rows.Count > 0)
+                {
+                    if (dt.Columns.Contains("COMMAND"))
+                    {
+                        command = dt.Rows[0]["COMMAND"].ToString();
+                    }
+                    if (dt.Columns.Contains("GUID"))
+                    {
+                        guid = dt.Rows[0]["GUID"].ToString();
+                    }
+                }
+            }
+            Dictionary<string, string> dicResult = new Dictionary<string, string>
+            {
+                { "CODE", code },
+                { "MSG", msg },
+                { "COMMAND", command },
+                { "GUID", guid },
+                { "TIME", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff") }
+            };
+            DicToDataTable(ref dsOut, dtName, dicResult);
+        }
+        public static void GetGsResultDt(ref DataSet dsOut, string code, string msg, string dtName = "GSRESULT")
+        {
+            if (dsOut.Tables.Contains(dtName))
+            {
+                dsOut.Tables.Remove(dtName);
+            }
+            Dictionary<string, string> dicResult = new Dictionary<string, string>
+            {
+                { "CODE", code },
+                { "MSG", msg },
+                { "TIME", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff") }
+            };
+            DicToDataTable(ref dsOut, dtName, dicResult);
+        }
+        public static void DicToDataTable(ref DataSet ds, string dtName, Dictionary<string, string> dic)
+        {
+            if (ds.Tables.Contains(dtName))
+            {
+                ds.Tables.Remove(dtName);
+            }
+            DataTable dt = new DataTable(dtName);
+            foreach (var colName in dic.Keys)
+            {
+                dt.Columns.Add(colName, typeof(string));
+            }
+            DataRow dr = dt.NewRow();
+            foreach (KeyValuePair<string, string> item in dic)
+            {
+                dr[item.Key] = item.Value;
+            }
+            dt.Rows.Add(dr);
+            ds.Tables.Add(dt);
         }
         #endregion
 

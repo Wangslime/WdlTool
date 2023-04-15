@@ -12,35 +12,16 @@ namespace ExtendPublic
     public static class ExtendDataTable
     {
         #region 添加INTRESULT或者GSRESULT表
-        public static DataTable GetInterSult(this DataTable dt, string code = "0", string msg = "", string tableName = "INTRESULT")
+        public static DataTable GetIntResult(this DataTable dt, string tableName = "INTRESULT")
         {
             if (dt == null) { dt = new DataTable(); }
             dt.TableName = tableName;
             dt.Columns.Add("CODE");
             dt.Columns.Add("MSG");
-            dt.Rows.Add(code, msg);
+            dt.Rows.Add("0", "");
             return dt;
         }
-        public static DataTable GetInterSult(this DataTable dt, string msg = "", string tableName = "INTRESULT")
-        {
-            if (dt == null) { dt = new DataTable(); }
-            dt.TableName = tableName;
-            dt.Columns.Add("CODE");
-            dt.Columns.Add("MSG");
-            dt.Rows.Add(string.IsNullOrEmpty(msg) ? "0": "-1", msg);
-            return dt;
-        }
-
-        public static DataTable GetGsSult(this DataTable dt, string code = "0", string msg = "", string tableName = "GSRESULT")
-        {
-            if (dt == null) { dt = new DataTable(); }
-            dt.TableName = tableName;
-            dt.Columns.Add("CODE");
-            dt.Columns.Add("MSG");
-            dt.Rows.Add(code, msg);
-            return dt;
-        }
-        public static DataTable GetGsSult(this DataTable dt, string msg = "", string tableName = "GSRESULT")
+        public static DataTable GetIntResult(this DataTable dt, string msg, string tableName = "INTRESULT")
         {
             if (dt == null) { dt = new DataTable(); }
             dt.TableName = tableName;
@@ -49,45 +30,84 @@ namespace ExtendPublic
             dt.Rows.Add(string.IsNullOrEmpty(msg) ? "0" : "-1", msg);
             return dt;
         }
-
-        public static DataTable GetInterSult(string code = "0", string msg = "", string tableName = "INTRESULT")
+        public static DataTable GetIntResult(this DataTable dt, string code, string msg, string tableName = "INTRESULT")
         {
-            DataTable dt = new DataTable();
+            if (dt == null) { dt = new DataTable(); }
             dt.TableName = tableName;
             dt.Columns.Add("CODE");
             dt.Columns.Add("MSG");
             dt.Rows.Add(code, msg);
             return dt;
         }
-        public static DataTable GetInterSult(string msg = "", string tableName = "INTRESULT")
+        public static DataTable GetIntResult(this DataTable dt, long code, string msg, string tableName = "INTRESULT")
         {
-            DataTable dt = new DataTable();
+            if (dt == null) { dt = new DataTable(); }
+            dt.TableName = tableName;
+            dt.Columns.Add("CODE");
+            dt.Columns.Add("MSG");
+            dt.Rows.Add(code.ToString(), msg);
+            return dt;
+        }
+
+        public static DataTable GetGsResult(this DataTable dt, string tableName = "GSRESULT")
+        {
+            if (dt == null) { dt = new DataTable(); }
+            dt.TableName = tableName;
+            dt.Columns.Add("CODE");
+            dt.Columns.Add("MSG");
+            dt.Rows.Add("0", "");
+            return dt;
+        }
+        public static DataTable GetGsResult(this DataTable dt, string msg, string tableName = "GSRESULT")
+        {
+            if (dt == null) { dt = new DataTable(); }
             dt.TableName = tableName;
             dt.Columns.Add("CODE");
             dt.Columns.Add("MSG");
             dt.Rows.Add(string.IsNullOrEmpty(msg) ? "0" : "-1", msg);
             return dt;
         }
-
-        public static DataTable GetGsSult(string code = "0", string msg = "", string tableName = "GSRESULT")
+        public static DataTable GetGsResult(this DataTable dt, long code, string msg, string tableName = "GSRESULT")
         {
-            DataTable dt = new DataTable();
+            if (dt == null) { dt = new DataTable(); }
             dt.TableName = tableName;
             dt.Columns.Add("CODE");
             dt.Columns.Add("MSG");
             dt.Rows.Add(code, msg);
             return dt;
         }
-        public static DataTable GetGsSult(string msg = "", string tableName = "GSRESULT")
+        public static DataTable GetGsResult(this DataTable dt, int code, string msg, string tableName = "GSRESULT")
         {
-            DataTable dt = new DataTable();
+            if (dt == null) { dt = new DataTable(); }
             dt.TableName = tableName;
             dt.Columns.Add("CODE");
             dt.Columns.Add("MSG");
-            dt.Rows.Add(string.IsNullOrEmpty(msg) ? "0" : "-1", msg);
+            dt.Rows.Add(code.ToString(), msg);
             return dt;
         }
-        #endregion\
+
+        public static DataTable GsToDataTable(string code, string msg, string dtName = "GSRESULT")
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>
+            {
+                { "CODE", code },
+                { "MSG", msg },
+                { "TIME", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff") }
+            };
+            DataTable dt = new DataTable(dtName);
+            foreach (var colName in dic.Keys)
+            {
+                dt.Columns.Add(colName, typeof(string));
+            }
+            DataRow dr = dt.NewRow();
+            foreach (KeyValuePair<string, string> item in dic)
+            {
+                dr[item.Key] = item.Value;
+            }
+            dt.Rows.Add(dr);
+            return dt;
+        }
+        #endregion
 
         public static DataTable SelectTable(this DataTable dt, string rowName, string value)
         {
@@ -306,6 +326,28 @@ namespace ExtendPublic
                 }
             }
             return value;
+        }
+
+        public static DataTable EnityToDataTable<T>(this T enity) where T : class, new()
+        {
+            if (enity == null)
+            {
+                enity = new T();
+            }
+            DataTable dt = new DataTable(typeof(T).Name);
+            PropertyInfo[] fieldInfos = enity.GetType().GetProperties();
+            foreach (var fieldInfo in fieldInfos)
+            {
+                dt.Columns.Add(fieldInfo.Name);
+            }
+            DataRow row = dt.NewRow();
+            fieldInfos = enity.GetType().GetProperties();
+            foreach (var fieldInfo in fieldInfos)
+            {
+                row[fieldInfo.Name] = fieldInfo.GetValue(enity)?.ToString();
+            }
+            dt.Rows.Add(row);
+            return dt;
         }
     }
 }

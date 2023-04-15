@@ -8,14 +8,14 @@ namespace IocTest
         {
             Console.WriteLine("Hello, World!");
 
-            IocContainer iocContainer = IocContainer.CreateIocContainer();
-            iocContainer.AddScoped<Class1>();
-            iocContainer.AddScoped<Class2>();
-            iocContainer.AddScoped<Class3>();
-            iocContainer.AddScoped<Class4>();
-            iocContainer.AddScoped<Class5>();
+            IocProvider iocProvider = IocProvider.CreateIocProvider();
+            iocProvider.AddScoped<Class1>();
+            iocProvider.AddScoped<Class2>();
+            iocProvider.AddScoped<Class3>();
+            iocProvider.AddScoped<Class4>();
+            iocProvider.AddScoped<Class5>();
 
-            Class1 class1 = iocContainer.GetService<Class1>();
+            Class1 class1 = iocProvider.GetService<Class1>();
         }
     }
 
