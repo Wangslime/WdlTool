@@ -8,12 +8,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace WdlNetIoc
 {
-    public class IocContainer
+    public class IocProvider
     {
         #region 单例模式
         private static readonly object locked = new object();
-        private static IocContainer _Instance = null;
-        private static IocContainer Instance
+        private static IocProvider _Instance = null;
+        private static IocProvider Instance
         {
             get
             {
@@ -23,7 +23,7 @@ namespace WdlNetIoc
                     {
                         if (_Instance == null)
                         {
-                            _Instance = new IocContainer();
+                            _Instance = new IocProvider();
                         }
                     }
                 }
@@ -39,11 +39,11 @@ namespace WdlNetIoc
         }
         #endregion
 
-        public static IocContainer CreateIocContainer()
+        public static IocProvider CreateIocProvider()
         { 
             return Instance;
         }
-        private IocContainer() { }
+        private IocProvider() { }
 
         private ConcurrentDictionary<string, ServiceDescriptor> dicIocContainer = new ConcurrentDictionary<string, ServiceDescriptor>();
 
@@ -108,55 +108,40 @@ namespace WdlNetIoc
         {
             object retObj = null;
             #region 构造函数注入
+            ConstructorInfo[] constructorInfos = type.GetConstructors();
+            ConstructorInfo constructorInfo;// = constructorInfos?.MaxBy(p => p.GetParameters().Length);
+            if (constructorInfos.Any(p => p.IsDefined(typeof(IocConstructorAttribute), true)))
             {
-                ConstructorInfo[] constructorInfos = type.GetConstructors();
-                ConstructorInfo constructorInfo;// = constructorInfos?.MaxBy(p => p.GetParameters().Length);
-                if (constructorInfos.Any(p => p.IsDefined(typeof(IocConstructorAttribute), true)))
-                {
-                    constructorInfo = constructorInfos?.FirstOrDefault(p => p.IsDefined(typeof(IocConstructorAttribute), true));
-                }
-                else
-                {
-                    constructorInfo = constructorInfos?.OrderByDescending(p=> p.GetParameters().Length).First();
-                }
-                List<object> paramsList = new List<object>();
-                foreach (ParameterInfo parameterInfo in constructorInfo?.GetParameters())
-                {
-                    Type parameter = parameterInfo.ParameterType;
-                    Type parameterType = dicIocContainer[parameter.FullName].TypeValue;
-                    object paramerObj = PrivateGetService(parameterType);
-                    paramsList.Add(paramerObj);
-                }
-                retObj = dicIocContainer[type.FullName].GetService(paramsList.ToArray());
+                constructorInfo = constructorInfos?.FirstOrDefault(p => p.IsDefined(typeof(IocConstructorAttribute), true));
             }
+            else
+            {
+                constructorInfo = constructorInfos?.OrderByDescending(p => p.GetParameters().Length).First();
+            }
+            List<object> paramsList = new List<object>();
+            foreach (ParameterInfo parameterInfo in constructorInfo?.GetParameters())
+            {
+                Type parameter = parameterInfo.ParameterType;
+                Type parameterType = dicIocContainer[parameter.FullName].TypeValue;
+                object paramerObj = PrivateGetService(parameterType);
+                paramsList.Add(paramerObj);
+            }
+            retObj = dicIocContainer[type.FullName].GetService(paramsList.ToArray());
             #endregion
 
             #region 属性注入
+            foreach (PropertyInfo propertyInfo in type.GetProperties())
             {
-                foreach (PropertyInfo propertyInfo in type.GetProperties())
+                Type property = propertyInfo.PropertyType;
+                if (dicIocContainer.ContainsKey(property.FullName))
                 {
-                    Type property = propertyInfo.PropertyType;
-                    if (dicIocContainer.ContainsKey(property.FullName))
-                    {
-                        Type propertyType = dicIocContainer[property.FullName].TypeValue;
-                        object paramerObj = PrivateGetService(propertyType);
-                        propertyInfo.SetValue(retObj, paramerObj, null);
-                    }
+                    Type propertyType = dicIocContainer[property.FullName].TypeValue;
+                    object paramerObj = PrivateGetService(propertyType);
+                    propertyInfo.SetValue(retObj, paramerObj, null);
                 }
             }
             #endregion
             return retObj;
-        }
-
-        internal static T CreateDeepCopy<T>(T obj)
-        {
-            T t;
-            MemoryStream memoryStream = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(memoryStream, obj);
-            memoryStream.Position = 0;
-            t = (T)formatter.Deserialize(memoryStream);
-            return t;
         }
     }
 }

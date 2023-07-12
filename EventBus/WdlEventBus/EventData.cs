@@ -2,11 +2,16 @@
 
 namespace WdlEventBus
 {
+    internal interface IEventData
+    {
+
+    }
     public class EventData : IEventData
     {
         public object Sender { get; set; }
         public DateTime EventTime { get; set; } = DateTime.Now;
         public string MethodName { get; set; } = "";
+        public string EventName { get; set; } = "";
         public object Data { get; set; }
     }
 
@@ -15,6 +20,7 @@ namespace WdlEventBus
         public object Sender { get; set; }
         public DateTime EventTime { get; set; } = DateTime.Now;
         public string MethodName { get; set; } = "";
+        public string EventName { get; set; } = "";
         public T Data { get; set; }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
+using System.Reflection;
 using System.Text;
 
 namespace ExtendPublic
@@ -75,6 +77,35 @@ namespace ExtendPublic
                 sb.Append(crcs_split_4);
             }
             return sb.ToString();
+        }
+
+        public static Dictionary<string, string> EnityToDic<T>(this T enity) where T : class, new()
+        {
+            if (enity == null)
+            {
+                enity = new T();
+            }
+            PropertyInfo[] propertyInfos = enity.GetType().GetProperties();
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            foreach (var item in propertyInfos)
+            {
+                dic.Add(item.Name, item.GetValue(enity) != null ? item.GetValue(enity).ToString() : "");
+            }
+            return dic;
+        }
+
+        public static Dictionary<string, string> RowToDic(this DataRow row)
+        {
+            if (row == null)
+            {
+                return null;
+            }
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            foreach (DataColumn item in row.Table.Columns)
+            {
+                dic.Add(item.ColumnName, row[item.ColumnName]?.ToString());
+            }
+            return dic;
         }
     }
 }

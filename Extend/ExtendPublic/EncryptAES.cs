@@ -9,6 +9,7 @@ namespace ExtendPublic
     {
         public static string Key = "Wangslime";
         public static string Vector = "slime7456";
+
         #region AES加密解密
         /// <summary>  
         /// AES加密  

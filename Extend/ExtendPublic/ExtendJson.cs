@@ -16,10 +16,15 @@ namespace ExtendPublic
                 if (string.IsNullOrEmpty(str)) { return default; }
                 return JsonConvert.DeserializeObject<T>(str);
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-                throw ex;
+                throw;
             }
+        }
+
+        public static T DeepCopy<T>(this T t)
+        {
+            return t.ToJson().JsonToObj<T>();
         }
     }
 }

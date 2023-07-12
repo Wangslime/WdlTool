@@ -136,7 +136,7 @@ namespace WdlMqttAdaptor
                 };
                 LogEvent?.Invoke($"===发送消息：{_ServerTopic}内容:{content}===");
                 MqttClientPublishResult mqttClientPublishResult = await mqttClient.PublishAsync(msg);
-                return mqttClientPublishResult.IsSuccess;
+                return mqttClientPublishResult.ReasonCode == MqttClientPublishReasonCode.Success;
             }
             catch (Exception)
             {
@@ -167,8 +167,10 @@ namespace WdlMqttAdaptor
 
         private Task MqttClient_Connected(MqttClientConnectedEventArgs arg)
         {
-            LogEvent?.Invoke($"=====连接MQTT服务器成功,连接时间{DateTime.Now}====");
-            return Task.CompletedTask;
+            return Task.Run(()=>
+            {
+                LogEvent?.Invoke($"=====连接MQTT服务器成功,连接时间{DateTime.Now}====");
+            });
         }
     }
 }

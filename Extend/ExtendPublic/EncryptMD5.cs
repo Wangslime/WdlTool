@@ -7,8 +7,8 @@ namespace ExtendPublic
 {
     public class EncryptMD5
     {
-        public static string GUIDE = "GUIDESOFT";
-        private static readonly int KeySize = 24;
+        public static string KeyValue = "GUIDESOFT";
+        public static int KeySize = 24;
         private static readonly byte[] UnicodeOrderPrefix = new byte[2] { 0xFF, 0xFE };
         private static readonly byte[] UnicodeReversePrefix = new byte[2] { 0xFE, 0xFF };
         
@@ -19,7 +19,7 @@ namespace ExtendPublic
         /// <returns>返回加密后密文字符串</returns>
         public static string Encrypt(string content)
         {
-            return Encrypt(content, GUIDE);
+            return Encrypt(content, KeyValue);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace ExtendPublic
         /// <returns>返回明文字符串</returns>
         public static string Decrypt(string content)
         {
-            return Decrypt(content, GUIDE);
+            return Decrypt(content, KeyValue);
         }
         /// <summary>
         /// 方法说明：加密方法        

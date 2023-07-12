@@ -101,10 +101,10 @@ namespace ExtendPublic
     }
     public class DataSetObj
     {
-        internal List<DatatableObj> DatatableObjs { get; set; } = new List<DatatableObj>();
+        public List<DatatableObj> DatatableObjs { get; set; } = new List<DatatableObj>();
     }
 
-    internal class DatatableObj
+    public class DatatableObj
     {
         public string TableName { get; set; } = "";
         public int RowCount { get; set; } = 0;

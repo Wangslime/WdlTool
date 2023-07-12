@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace WdlHttpClientNet
@@ -10,6 +12,7 @@ namespace WdlHttpClientNet
     {
         private static readonly object LockObj = new object();
         private static HttpClient httpClient = null;
+        public static int Timeout = 0;
         public HttpClientNet()
         {
             GetInstance();
@@ -39,6 +42,63 @@ namespace WdlHttpClientNet
         }
 
         #region POST
+        public string PostSync(string url, string strJson)//post同步请求方法
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new Exception("未设置URL,请调用SetServiceURL函数设置连接字符串");
+            }
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create(url);
+
+                request.Method = "POST";
+                request.ContentLength = 0;
+                request.ContentType = "application/json";
+                if (Timeout > 0)
+                {
+                    request.Timeout = Timeout;
+                }
+
+                if (!string.IsNullOrEmpty(strJson))
+                {
+                    var bytes = Encoding.UTF8.GetBytes(strJson);
+                    request.ContentLength = bytes.Length;
+
+                    using (var writeStream = request.GetRequestStream())
+                    {
+                        writeStream.Write(bytes, 0, bytes.Length);
+                    }
+                }
+
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    var responseValue = string.Empty;
+
+                    if (response.StatusCode != HttpStatusCode.OK)
+                    {
+                        var message = $"请求数据失败。请求字符串：{url}\r\n状态码：{response.StatusCode}\r\n描述信息：{response.StatusDescription}";
+                        throw new ApplicationException(message);
+                    }
+
+                    using (var responseStream = response.GetResponseStream())
+                    {
+                        if (responseStream != null)
+                        {
+                            using (var reader = new StreamReader(responseStream))
+                            {
+                                responseValue = reader.ReadToEnd();
+                            }
+                        }
+                    }
+                    return responseValue;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public string Post(string url, string strJson)//post同步请求方法
         {
             if (string.IsNullOrEmpty(url))
@@ -60,27 +120,6 @@ namespace WdlHttpClientNet
                     throw new Exception(res.Result.StatusCode.ToString());
                 }
             }
-            //catch (WebException ex)
-            //{
-            //    if (ex.Status == WebExceptionStatus.ProtocolError)
-            //    {
-            //        using (HttpWebResponse err = ex.Response as HttpWebResponse)
-            //        {
-            //            if (err != null)
-            //            {
-            //                using (StreamReader streamReader = new StreamReader(err.GetResponseStream()))
-            //                {
-            //                    string htmlResponse = streamReader.ReadToEnd();
-            //                    string txtResults = string.Format("{0} {1}", err.StatusDescription, htmlResponse);
-            //                    strReturn = txtResults;
-            //                }
-            //                return false;
-            //            }
-            //        }
-            //    }
-            //    strReturn = ex.Message + ex.StackTrace;
-            //    return false;
-            //}
             catch (Exception)
             {
                 throw;
@@ -108,29 +147,7 @@ namespace WdlHttpClientNet
             {
                 throw;
             }
-            //catch (WebException ex)
-            //{
-            //    if (ex.Status == WebExceptionStatus.ProtocolError)
-            //    {
-            //        using (HttpWebResponse? err = ex.Response as HttpWebResponse)
-            //        {
-            //            if (err != null)
-            //            {
-            //                using (StreamReader streamReader = new StreamReader(err.GetResponseStream()))
-            //                {
-            //                    string htmlResponse = streamReader.ReadToEnd();
-            //                    string txtResults = string.Format("{0} {1}", err.StatusDescription, htmlResponse);
-            //                    tuple = Tuple.Create(false, txtResults);
-            //                }
-            //            }
-            //        }
-            //    }
-            //    tuple = Tuple.Create(false, ex.Message + ex.StackTrace);
-            //    return tuple;
-            //}
         }
-
-
         public string HttpPostFormData(string url, string name, string strJson)
         {
             if (string.IsNullOrEmpty(url))
@@ -187,8 +204,6 @@ namespace WdlHttpClientNet
                 throw;
             }
         }
-
-
         public string HttpPostToken(string strUrl, string strJson, string token)
         {
             if (string.IsNullOrEmpty(strUrl))
