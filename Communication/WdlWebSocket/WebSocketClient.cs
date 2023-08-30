@@ -143,7 +143,7 @@ namespace WdlWebSocket
                 }
                 finally
                 {
-                    await Task.Delay(1000, cts.Token);
+                    await Task.Delay(1000);
                 }
             }
         }

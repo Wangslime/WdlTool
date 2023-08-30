@@ -89,6 +89,10 @@ namespace WdlMqttAdaptor
                             Port = _Port
                         }
                     };
+                    if (!string.IsNullOrEmpty(_UserName))
+                    {
+                        options.Credentials = new MqttClientCredentials(_UserName, UnicodeEncoding.UTF8.GetBytes(_Password));
+                    }
                     await mqttClient.ConnectAsync(options);
                     MqttSubscribe();
                 }
@@ -117,32 +121,41 @@ namespace WdlMqttAdaptor
             {
                 LogError?.Invoke(ex);
             }
-           
         }
 
 
         //MQTT发布消息 content消息内容
-        public async Task<bool> MqttClientPublish(string content)
+        public async Task<bool> MqttClientPublish(string content, string topic = "")
         {
             try
             {
+                if (string.IsNullOrEmpty(topic)) 
+                {
+                    topic = _ServerTopic;
+                }
                 var msg = new MqttApplicationMessage()
                 {
-                    Topic = _ServerTopic,
+                    Topic = topic,
                     Payload = Encoding.UTF8.GetBytes(content),
                     //QOS 消息等级
                     QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce,
                     Retain = false
                 };
-                LogEvent?.Invoke($"===发送消息：{_ServerTopic}内容:{content}===");
+                LogEvent?.Invoke($"===发送消息：{topic}内容:{content}===");
                 MqttClientPublishResult mqttClientPublishResult = await mqttClient.PublishAsync(msg);
-                return mqttClientPublishResult.ReasonCode == MqttClientPublishReasonCode.Success;
+                if (mqttClientPublishResult.ReasonCode == MqttClientPublishReasonCode.Success)
+                { 
+                    return true;
+                }
+                else
+                {
+                    throw new Exception(mqttClientPublishResult.ReasonCode +","+ mqttClientPublishResult.ReasonString);
+                }
             }
             catch (Exception)
             {
                 throw;
             }
-            
         }
 
         //订阅MQTT消息

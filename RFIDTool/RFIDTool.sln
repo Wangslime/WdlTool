@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFIDReader", "RFIDReader\RFIDReader.csproj", "{D55FB8CB-FC04-4E97-A20A-64E005B307BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ShareDLL", "ShareDLL", "{6CE3A222-FEB5-4E9E-A191-772F63ACD2AB}"
+	ProjectSection(SolutionItems) = preProject
+		ShareDLL\Communication.dll = ShareDLL\Communication.dll
+		ShareDLL\IRP1.dll = ShareDLL\IRP1.dll
+		ShareDLL\IRP1Message.xml = ShareDLL\IRP1Message.xml
+		ShareDLL\RFIDInterface.dll = ShareDLL\RFIDInterface.dll
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RFIDWriteEpc", "RFIDWriteEpc\RFIDWriteEpc.csproj", "{180C7AD2-2340-41AD-BD61-8339327466D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D55FB8CB-FC04-4E97-A20A-64E005B307BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D55FB8CB-FC04-4E97-A20A-64E005B307BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D55FB8CB-FC04-4E97-A20A-64E005B307BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D55FB8CB-FC04-4E97-A20A-64E005B307BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{180C7AD2-2340-41AD-BD61-8339327466D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{180C7AD2-2340-41AD-BD61-8339327466D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{180C7AD2-2340-41AD-BD61-8339327466D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{180C7AD2-2340-41AD-BD61-8339327466D0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ECF3858F-C1D1-4996-8C01-383072F7F259}
+	EndGlobalSection
+EndGlobal

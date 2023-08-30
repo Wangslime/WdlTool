@@ -19,7 +19,7 @@ namespace WdlSocketTcp
         public event Action<Exception> LogError;
 
         CancellationTokenSource cts = new CancellationTokenSource();
-        public bool Start(string ip = "127.0.0.1", int port = 13000)
+        public bool Start(string ip = "127.0.0.1", int port = 10000)
         {
             //1 创建Socket对象
             socketClient?.Disconnect(true);
