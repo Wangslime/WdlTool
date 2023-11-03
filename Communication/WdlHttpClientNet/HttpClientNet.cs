@@ -127,7 +127,6 @@ namespace WdlHttpClientNet
         }
         public async Task<string> PostAsync(string strUrl, string strJson)//post异步请求方法
         {
-            Tuple<bool, string> tuple;
             try
             {
                 HttpContent content = new StringContent(strJson);

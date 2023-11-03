@@ -70,7 +70,7 @@ namespace WdlKafkaAdaptor
                 }
                 catch (Exception ex)
                 {
-
+                    delLog.Invoke(ex.Message + ex.StackTrace);
                 }
             });
         }
