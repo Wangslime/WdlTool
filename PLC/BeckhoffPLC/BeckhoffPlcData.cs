@@ -29,6 +29,7 @@ namespace BeckhoffPLC
             foreach (string s in list)
             {
                 var info = await MiniExcel.QueryAsync<ExcelInfo>(filePath, s);
+
                 if (!dicInfoList.ContainsKey(s))
                 {
                     dicInfoList.TryAdd(s, info.Where(p => !string.IsNullOrEmpty(p.Name)).ToList());
@@ -371,5 +372,29 @@ namespace BeckhoffPLC
     {
         public string Name { get; set; } = "";
         public dynamic Value { get; set; }
+
+
+
+
+        public void Abbbb()
+        {
+            // 要转换的类型
+            Type type = typeof(string);
+            // 通过反射获取泛型定义并使用 MakeGenericType 方法创建具体泛型类型
+            Type genericType = typeof(MyGenericClass<>).MakeGenericType(type);
+            // 实例化泛型类
+            object instance = Activator.CreateInstance(genericType);
+            // 调用泛型方法
+            MethodInfo methodInfo = genericType.GetMethod("MyMethod");
+            string result = (string)methodInfo.Invoke(instance, new object[] { "hello" });
+        }
+    }
+
+    public class MyGenericClass<T> where T : class, new()
+    {
+        public Task<IEnumerable<T>> MyMethod(string filePath, string sheetName) 
+        {
+            return MiniExcel.QueryAsync<T>(filePath, sheetName);
+        }
     }
 }
