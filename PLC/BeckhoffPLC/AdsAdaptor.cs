@@ -35,96 +35,16 @@ namespace BeckhoffPLC
         private ConcurrentDictionary<int, dynamic> PlcDataValue = new ConcurrentDictionary<int, dynamic>();
         private CancellationTokenSource cts = new CancellationTokenSource();
 
-        private TcAdsClient client = new TcAdsClient();
-        private DeviceInfo deviceInfo = new DeviceInfo();
-        private StateInfo stateInfo = new StateInfo();
-        private bool IsConnected = false;
 
-        public bool Start()
-        {
-            string netId = "172.255.255.255.1.1";
-            int port = 801;
-            int timeout = 5000;
-            client ??= new TcAdsClient();
-            Connect(netId, port, timeout);
-            if (IsConnected)
-            {
-                Dictionary<int,Type> plcDataTypeHandle = new Dictionary<int,Type>();
-                Type type = typeof(Global_Variables);
-                PropertyInfo[] properties = type.GetProperties();
-                foreach (PropertyInfo propertyInfo in properties)
-                {
-                    try
-                    {
-                        int notifyHandle = CreateVariableHandle($".{propertyInfo.Name}");
-                        Type type1 = propertyInfo.PropertyType;
-                        if (!type.Assembly.GetTypes().Contains(type1))
+
                         {
-
-                            dynamic obj1 = client.ReadAny(notifyHandle, type1);
-                        }
-                        else 
-                        {
+            client ??= new AdsClient();
+            client.Connect(netId, port);  // 替换 "NETID" 为实际的 Beckhoff PLC 的 NET ID
                         
-                        }
-                        plcDataTypeHandle.TryAdd(notifyHandle, propertyInfo.PropertyType);
-                    }
-                    catch (Exception ex)
-                    {
-                        
-                    }
-                }
-                if (plcDataTypeHandle.Any())
-                {
-                    ReadState();
-                    ReadDeviceInfo();
-
-                    ReadAll(plcDataTypeHandle);
-                    Task.Factory.StartNew(async ()=>
-                    {
-                        await ReadPlcInfoObj(plcDataTypeHandle);
-                    }, TaskCreationOptions.LongRunning);
-                }
-            }
             return client.IsConnected;
         }
 
-        private async Task ReadPlcInfoObj(Dictionary<int, Type> plcDataTypeHandle)
-        {
-            while (!cts.IsCancellationRequested) 
-            {
-                try
-                {
-                    ReadState();
-
-                    await Task.Delay(50);
-                }
-                catch (Exception)
-                {
-                    await Task.Delay(1000);
-                }
-                
-            }
-        }
-
-        public void ReadAll(Dictionary<int, Type> plcDataTypeHandle)
-        {
-            foreach (var item in plcDataTypeHandle)
-            {
-                try
-                {
-                    dynamic obj = client.ReadAny(item.Key, item.Value);
-                    Type type = obj.GetType();
-                    if (PlcDataValue.ContainsKey(item.Key))
                     {
-                        PlcDataValue.TryAdd(item.Key, obj);
-                    }
-                    else
-                    {
-                        PlcDataValue[item.Key] = obj;
-                    }
-                }
-                catch (Exception)
                 {
                 }
             }
