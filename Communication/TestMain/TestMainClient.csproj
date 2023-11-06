@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,5 +6,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PLC\BeckhoffPLC\BeckhoffPLC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="DynamicAssembly">
+      <HintPath>C:\Users\Lenovo\Desktop\MyAssembly.dll</HintPath>
+    </Reference>
+    <Reference Include="TwinCAT.Ads">
+      <HintPath>..\..\PLC\TwinCAT.Ads.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 </Project>

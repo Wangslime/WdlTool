@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using BeckhoffPLC;
+using System.Collections.Concurrent;
 using System.Text;
 
 namespace TestMainClient
@@ -8,8 +9,34 @@ namespace TestMainClient
         static ConcurrentQueue<string> queuePlcAdaptor = new ConcurrentQueue<string>();
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
-            
+            BeckhoffPlcData beckhoffPlcData = new BeckhoffPlcData();
+            await beckhoffPlcData.Initial();
+
+
+
+            //List<dynamic> list = new List<dynamic>();
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    Dictionary<string, Type> dic = new Dictionary<string, Type>
+            //{
+            //    { "IsHeight", typeof(bool[]) },
+            //    { "Name", typeof(string) }
+            //};
+            //    Type? type = dic.GetDynamicType();
+            //    if (type != null)
+            //    {
+            //        dynamic? dynamic = Activator.CreateInstance(type);
+
+            //        if (dynamic != null)
+            //        {
+            //            dynamic.IsHeight = new bool[4];
+            //            dynamic.Name = "Wang";
+            //        }
+            //        list.Add(dynamic);
+            //    }
+            //}
+            //Console.WriteLine("Hello, World!");
+
 
             while (true) {Thread.Sleep(1000);}
             #region WebSocketClient
