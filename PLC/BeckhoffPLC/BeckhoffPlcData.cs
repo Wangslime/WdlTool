@@ -3,6 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CSharp;
 using MiniExcelLibs;
+using MyAssembly;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Data;
@@ -35,8 +36,21 @@ namespace BeckhoffPLC
                 }
             }
 
-            var glovalList = await MiniExcel.QueryAsync<ExcelInfo>(filePath, "Global_Variables");
-            glovalList = glovalList?.Where(p => !string.IsNullOrEmpty(p.Name));
+            var glovalList = dicInfoList["Global_Variables"];
+            foreach (var item in glovalList)
+            {
+                string typeName = item.Type;
+                typeName = typeName.Replace(";", "");
+                typeName = typeName.Replace(":", "");
+                typeName = typeName.Trim();
+                if (!list.Contains(typeName))
+                {
+                    dicInfoList.Add(item.Name + "Class", new List<ExcelInfo>() { new ExcelInfo() { Name = item.Name, Type = item.Type, Description = item.Description } });
+                    item.Type = item.Name + "Class";
+
+                    dicInfoList.Remove(item.Name);
+                }
+            }
             List<TypeInfoName> TypeNmaeList = new List<TypeInfoName>();
             if (glovalList != null && glovalList.Any())
             {
@@ -243,11 +257,14 @@ namespace BeckhoffPLC
                 if (dicInfoList.ContainsKey(typeName))
                 {
                     TypeInfoName? typeInfo = GetTypeByTypeName(info.Name, info.Type, dicInfoList[typeName]);
-                    dicProperty.Add(typeInfo.Name, typeInfo.Value);
-                    string name1 = typeInfo.Value.GetType().Name;
-                    if (!dicPropertyValue.ContainsKey(name1))
+                    if (typeInfo != null)
                     {
-                        dicPropertyValue.Add(name1, typeInfo.Value);
+                        dicProperty.Add(typeInfo.Name, typeInfo.Value);
+                        string name1 = typeInfo.Value.GetType().Name;
+                        if (!dicPropertyValue.ContainsKey(name1))
+                        {
+                            dicPropertyValue.Add(name1, typeInfo.Value);
+                        }
                     }
                 }
                 else
@@ -369,6 +386,8 @@ namespace BeckhoffPLC
 
     public class TypeInfoName
     {
+        AlarmClass Alarm = new AlarmClass();
+
         public string Name { get; set; } = "";
         public dynamic Value { get; set; }
     }

@@ -166,6 +166,6 @@ namespace BeckhoffPLC
     public class AlarmClass
     {
         [MarshalAs(UnmanagedType.ByValArray, ArraySubType = UnmanagedType.U1, SizeConst = 301)]
-        public bool[] AlarmList = new bool[301];
+        public bool[] Alarm = new bool[301];
     }
 }

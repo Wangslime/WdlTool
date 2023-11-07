@@ -7,9 +7,19 @@ namespace 委托_Lambda_LINQ
 {
     internal class Program
     {
-
         static void Main(string[] args)
         {
+            Class1.a = 12;
+
+            Class1 class1 = new Class1();
+            class1.b = 13;
+
+
+
+            
+
+
+
             List<int> list = new List<int>() {1,2,3,4,5,6,7 };
 
             #region Linq函数
@@ -176,6 +186,9 @@ namespace 委托_Lambda_LINQ
 
         public static bool Select(int p)
         {
+            Class1 class2 = new Class1();
+            class2.b = 18;
+
             return p < 5;
         }
     }
