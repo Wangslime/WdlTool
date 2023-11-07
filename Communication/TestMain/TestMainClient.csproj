@@ -12,9 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="DynamicAssembly">
-      <HintPath>C:\Users\Lenovo\Desktop\MyAssembly.dll</HintPath>
-    </Reference>
     <Reference Include="TwinCAT.Ads">
       <HintPath>..\..\PLC\TwinCAT.Ads.dll</HintPath>
     </Reference>
