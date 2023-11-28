@@ -282,5 +282,44 @@ namespace ExtendPublic
             MD5 m = MD5.Create();
             return m.ComputeHash(source);
         }
+
+
+        #region MD5加密
+        /// <summary>
+        /// 是否转化大小写
+        /// </summary>
+        public enum EnumIsUpper { ToUpper, ToLower };
+        /// <summary>
+        /// 密文长度
+        /// </summary>
+        public enum EnumEncryptLength { I16, I32 };
+
+        /// <summary>
+        /// MD5加密
+        /// </summary>
+        public static string GetMd5Str(string str, EnumIsUpper isUppper, EnumEncryptLength enumLength)
+        {
+            string pwd = "";
+            if (enumLength == EnumEncryptLength.I16)
+            {
+                //使用加密服务提供程序
+                MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+                //将指定的字节子数组的每个元素的数值转换为它的等效十六进制字符串表示形式。
+                pwd = BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(str)), 4, 8);
+                pwd = pwd.Replace("-", "");
+                pwd = (isUppper == EnumIsUpper.ToUpper) ? pwd.ToUpper() : pwd.ToLower();
+            }
+            else
+            {
+                MD5CryptoServiceProvider md5Hasher = new MD5CryptoServiceProvider();
+                byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(str));
+                for (int i = 0; i < data.Length; i++)
+                {
+                    pwd += isUppper == EnumIsUpper.ToUpper ? data[i].ToString("X2") : data[i].ToString("x2");
+                }
+            }
+            return (isUppper == EnumIsUpper.ToUpper) ? pwd.ToUpper() : pwd;
+        }
+        #endregion
     }
 }

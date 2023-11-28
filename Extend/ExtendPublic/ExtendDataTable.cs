@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -136,11 +137,41 @@ namespace ExtendPublic
             return retDt;
         }
 
-        public static DataTable SelectTableValueNotNull(this DataTable dt, string rowName)
+        public static DataTable SelectTable(this DataTable dt, string filterSql)
         {
-            DataTable retDt = new DataTable(dt?.TableName);
             if (!dt.IsDataTableEmpty())
             {
+                DataRow[] filteredRows = dt?.Select(filterSql);
+                if (filteredRows == null || !filteredRows.Any())
+                {
+                    return dt = dt ?? new DataTable(dt.TableName);
+                }
+#if NET60
+                if (filteredRows != null)
+                {
+                    DataTable dt1 = filteredRows.CopyToDataTable();
+                    dt1.TableName = dt.TableName;
+                    return dt1;
+                }
+                return null;
+#else
+                DataTable dt1= dt.Clone();
+                foreach (DataRow row in filteredRows)
+	            {
+                    dt1.Rows.Add(row);
+	            }
+                return dt1;
+#endif
+            }
+            return dt;
+        }
+
+        public static DataTable SelectTableValueNotNull(this DataTable dt, string rowName)
+        {
+            DataTable retDt = dt?.Clone();
+            if (!dt.IsDataTableEmpty())
+            {
+                retDt.TableName = dt.TableName;
                 retDt = dt.Clone();
                 if (dt.Columns.Contains(rowName))
                 {

@@ -7,7 +7,7 @@ namespace TestMainClient
     internal class Program
     {
         static ConcurrentQueue<string> queuePlcAdaptor = new ConcurrentQueue<string>();
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             BeckhoffPlcData beckhoffPlcData = new BeckhoffPlcData();
             await beckhoffPlcData.Initial();

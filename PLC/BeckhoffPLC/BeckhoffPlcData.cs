@@ -1,17 +1,11 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CSharp;
 using MiniExcelLibs;
-using MyAssembly;
-using System.CodeDom;
-using System.CodeDom.Compiler;
 using System.Data;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Xml.Linq;
 
 namespace BeckhoffPLC
 {
@@ -29,15 +23,15 @@ namespace BeckhoffPLC
             dicInfoList.Clear();
             foreach (string s in list)
             {
-                var info = await MiniExcel.QueryAsync<ExcelInfo>(filePath, s);
+                IEnumerable<ExcelInfo> info = await MiniExcel.QueryAsync<ExcelInfo>(filePath, s);
 
                 if (!dicInfoList.ContainsKey(s))
                 {
                     dicInfoList.TryAdd(s, info.Where(p => !string.IsNullOrEmpty(p.Name)).ToList());
                 }
             }
-
             var glovalList = dicInfoList["Global_Variables"];
+
             foreach (var item in glovalList)
             {
                 string typeName = item.Type;
@@ -52,21 +46,23 @@ namespace BeckhoffPLC
                     dicInfoList.Remove(item.Name);
                 }
             }
-            List<TypeInfoName> TypeNmaeList = new List<TypeInfoName>();
             if (glovalList != null && glovalList.Any())
             {
+                //根据Excel生成动态程序集，包括各种类和属性对象
                 typeInfoName = GetTypeByTypeName("Global_Variables", "Global_Variables", dicInfoList["Global_Variables"]);
                 dicPropertyValue.Add("Global_Variables", typeInfoName.Value);
             }
-            string code = GenerateCodeFromAssembly(Dynamic.assemblyBuilder);
-            // C# 代码字符串
 
+
+            string code = GenerateCodeFromAssembly(Dynamic.assemblyBuilder);
+
+            //C# 字符串代码生成程序集实体程序集
             var compilation = CSharpCompilation.Create(Dynamic.assemblyBuilder.GetName().Name)
                             .WithOptions(new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary))
                             .AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location))
                             .AddSyntaxTrees(CSharpSyntaxTree.ParseText(code));
 
-            string baseDirectory = System.AppContext.BaseDirectory + "MyAssembly.dll";
+            string baseDirectory = AppContext.BaseDirectory + "MyAssembly.dll";
             if (File.Exists(baseDirectory))
             {
                 File.Delete(baseDirectory);
@@ -76,7 +72,13 @@ namespace BeckhoffPLC
             return true;
         }
 
-        // 从类型中获取 C# 代码字符串
+
+
+        /// <summary>
+        /// 将动态程序集转换为C#字符串代码
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <returns></returns>
         public string GenerateCodeFromAssembly(AssemblyBuilder assembly)
         {
             StringBuilder sb = new StringBuilder();
@@ -99,7 +101,6 @@ namespace BeckhoffPLC
             foreach (Type type in types)
             {
                 object obj = dicPropertyValue[type.Name];
-
                 sb.Append("[StructLayout(LayoutKind.Sequential, Pack = 1)]");
                 sb.Append('\n');
                 sb.Append($"public class {type.Name}");
@@ -110,6 +111,13 @@ namespace BeckhoffPLC
                 PropertyInfo[] propertyInfos = type.GetProperties();
                 foreach (PropertyInfo property in propertyInfos)
                 {
+                    string? description = dicInfoList[type.Name].FirstOrDefault(p=> p.Name == property.Name)?.Description;
+                    sb.Append("/// <summary>");
+                    sb.Append('\n');
+                    sb.Append("/// ");
+                    sb.Append(description);
+                    sb.Append('\n');
+                    sb.Append("/// </summary>");
                     dynamic obj1 = property.GetValue(obj);
                     string Unmanaged = GetUnmanagedType(obj1);
                     if (!string.IsNullOrEmpty(Unmanaged))
@@ -132,6 +140,11 @@ namespace BeckhoffPLC
             return sb.ToString();
         }
 
+        /// <summary>
+        /// 获取特性的字符串格式
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private string GetUnmanagedType(dynamic obj)
         {
             Type type = obj.GetType();
@@ -212,6 +225,13 @@ namespace BeckhoffPLC
             }
             return unmanagedType;
         }
+
+        /// <summary>
+        /// 获取属性值的字符串格式
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private static string GetDefaultValue(Type type, dynamic obj)
         {
             if (type.IsArray)
@@ -244,6 +264,37 @@ namespace BeckhoffPLC
             }
         }
 
+        /// <summary>
+        /// 通过Type调用泛型方法
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="filePath"></param>
+        /// <param name="sheetName"></param>
+        /// <returns></returns>
+        public async Task<dynamic> QueryExcelByType(Type type, string filePath, string sheetName)
+        {
+            // 通过反射获取泛型定义并使用 MakeGenericType 方法创建具体泛型类型
+            Type genericType = typeof(MyGenericClass<>).MakeGenericType(type);
+            // 实例化泛型类
+            dynamic? instance = Activator.CreateInstance(genericType);
+            // 调用泛型方法
+            //MethodInfo methodInfo = genericType.GetMethod("MyMethod");
+            //dynamic rest = methodInfo.Invoke(instance, new object[] { filePath, sheetName });
+            dynamic task = instance?.MyMethod(filePath, sheetName);
+            if (task is Task) return null;
+            dynamic result = await task;
+            return result;
+        }
+
+        /// <summary>
+        /// 根据Excel生成动态程序集
+        /// 递归调用
+        /// 包括各种类和属性对象
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="strType"></param>
+        /// <param name="excelInfos"></param>
+        /// <returns></returns>
         public TypeInfoName? GetTypeByTypeName(string name, string strType, List<ExcelInfo> excelInfos)
         {
             TypeInfoName typeInfoName = null;
@@ -312,6 +363,7 @@ namespace BeckhoffPLC
                         if (type != null)
                         {
                             length += 1;
+                            // 给数组类型赋初始值
                             dynamic value = Array.CreateInstance(type.GetElementType(), length);
                             dicProperty.Add(info.Name, value);
                         }
@@ -341,6 +393,14 @@ namespace BeckhoffPLC
                         }
                         if (value != null)
                         {
+                            strType = strType.Replace(";", "");
+                            strType = strType.Replace(":", "");
+                            strType = strType.Trim();
+                            //name;
+                            if (dicInfoList.ContainsKey(strType))
+                            {
+
+                            }
                             dicProperty.Add(info.Name, value);
                         }
                     }
@@ -351,7 +411,8 @@ namespace BeckhoffPLC
                 strType = strType.Replace(";", "");
                 strType = strType.Replace(":", "");
                 strType = strType.Trim();
-                //type1 = Dynamic.GetDynamicType(name, dicProperty[name].Value.GetType());
+
+                //生成动态类型
                 Type? type1 = dicProperty.GetDynamicType(strType);
                 if (type1 != null)
                 {
@@ -362,6 +423,7 @@ namespace BeckhoffPLC
                         Type type2 = dyn.GetType();
                         foreach (var item in dicProperty)
                         {
+                            //动态类型里面是属性赋初始值
                             PropertyInfo? propertyInfo = type2.GetProperty(item.Key);
                             propertyInfo.SetValue(dyn, item.Value);
                         }
@@ -391,22 +453,6 @@ namespace BeckhoffPLC
 
         public string Name { get; set; } = "";
         public dynamic Value { get; set; }
-
-
-
-
-        public void Abbbb()
-        {
-            // 要转换的类型
-            Type type = typeof(string);
-            // 通过反射获取泛型定义并使用 MakeGenericType 方法创建具体泛型类型
-            Type genericType = typeof(MyGenericClass<>).MakeGenericType(type);
-            // 实例化泛型类
-            object instance = Activator.CreateInstance(genericType);
-            // 调用泛型方法
-            MethodInfo methodInfo = genericType.GetMethod("MyMethod");
-            string result = (string)methodInfo.Invoke(instance, new object[] { "hello" });
-        }
     }
 
     public class MyGenericClass<T> where T : class, new()

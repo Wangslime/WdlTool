@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using MiniExcelLibs;
 
 namespace 委托_Lambda_LINQ
 {
@@ -9,16 +10,7 @@ namespace 委托_Lambda_LINQ
     {
         static void Main(string[] args)
         {
-            Class1.a = 12;
-
-            Class1 class1 = new Class1();
-            class1.b = 13;
-
-
-
-            
-
-
+            string a = DateTime.Now.ToShortDateString();
 
             List<int> list = new List<int>() {1,2,3,4,5,6,7 };
 
@@ -244,5 +236,11 @@ namespace 委托_Lambda_LINQ
             }
             return false;
         }
+    }
+
+    class LogEntry
+    {
+        public DateTime Timestamp { get; set; }
+        public string Message { get; set; }
     }
 }

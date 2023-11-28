@@ -13,7 +13,10 @@ namespace ExtendPublic
         #region 添加INTRESULT或者GSRESULT表
         public static DataSet GetIntResult(this DataSet ds, string tableName = "INTRESULT")
         {
-            if (ds.IsDataSetEmpty()) return ds;
+            if (ds == null)
+            {
+                ds = new DataSet();
+            }
             if (ds.Tables.Contains(tableName))
             {
                 ds.Tables.Remove(tableName);
@@ -28,7 +31,10 @@ namespace ExtendPublic
         }
         public static DataSet GetIntResult(this DataSet ds, string msg, string tableName = "INTRESULT")
         {
-            if (ds.IsDataSetEmpty()) return ds;
+            if (ds == null)
+            {
+                ds = new DataSet();
+            }
             if (ds.Tables.Contains(tableName))
             {
                 ds.Tables.Remove(tableName);
@@ -43,7 +49,10 @@ namespace ExtendPublic
         }
         public static DataSet GetIntResult(this DataSet ds, string code, string msg, string tableName = "INTRESULT")
         {
-            if (ds.IsDataSetEmpty()) return ds;
+            if (ds == null)
+            {
+                ds = new DataSet();
+            }
             if (ds.Tables.Contains(tableName))
             {
                 ds.Tables.Remove(tableName);
@@ -58,7 +67,10 @@ namespace ExtendPublic
         }
         public static DataSet GetIntResult(this DataSet ds, long code, string msg, string tableName = "INTRESULT")
         {
-            if (ds.IsDataSetEmpty()) return ds;
+            if (ds == null)
+            {
+                ds = new DataSet();
+            }
             if (ds.Tables.Contains(tableName))
             {
                 ds.Tables.Remove(tableName);
@@ -71,12 +83,12 @@ namespace ExtendPublic
             ds.Tables.Add(dt);
             return ds;
         }
-
-
-
         public static DataSet GetGsResult(this DataSet ds, string tableName = "GSRESULT")
         {
-            if (ds.IsDataSetEmpty()) return ds;
+            if (ds == null)
+            {
+                ds = new DataSet();
+            }
             if (ds.Tables.Contains(tableName))
             {
                 ds.Tables.Remove(tableName);
@@ -91,7 +103,10 @@ namespace ExtendPublic
         }
         public static DataSet GetGsResult(this DataSet ds, string msg, string tableName = "GSRESULT")
         {
-            if (ds.IsDataSetEmpty()) return ds;
+            if (ds == null)
+            {
+                ds = new DataSet();
+            }
             if (ds.Tables.Contains(tableName))
             {
                 ds.Tables.Remove(tableName);
@@ -106,7 +121,10 @@ namespace ExtendPublic
         }
         public static DataSet GetGsResult(this DataSet ds, string code, string msg, string tableName = "GSRESULT")
         {
-            if (ds.IsDataSetEmpty()) return ds;
+            if (ds == null)
+            {
+                ds = new DataSet();
+            }
             if (ds.Tables.Contains(tableName))
             {
                 ds.Tables.Remove(tableName);
@@ -121,7 +139,10 @@ namespace ExtendPublic
         }
         public static DataSet GetGsResult(this DataSet ds, long code, string msg, string tableName = "GSRESULT")
         {
-            if (ds.IsDataSetEmpty()) return ds;
+            if (ds == null)
+            {
+                ds = new DataSet();
+            }
             if (ds.Tables.Contains(tableName))
             {
                 ds.Tables.Remove(tableName);
@@ -225,6 +246,48 @@ namespace ExtendPublic
         const char crcs_split_2 = (char)18;
         const char crcs_split_3 = (char)17;
         const char crcs_split_4 = (char)15;
+
+        public static void GetReturnCodeMsg(this string strReturn, out string code, out string msg)
+        {
+            code = "0";
+            msg = "";
+            string[] columnData = strReturn.Split(crcs_split_4);
+            foreach (string strdata in columnData)
+            {
+                if (strdata.Contains("INTRESULT" + crcs_split_1) || strdata.Contains("GSRESULT" + crcs_split_1))
+                {
+                    string[] msgCode = strdata.Split(crcs_split_3);
+                    if (msgCode.Length == 3)
+                    {
+                        string[] strings = msgCode[0].Split(crcs_split_2);
+                        if (msgCode[0].Contains("CODE"))
+                        {
+                            for (int i = 0; i < strings.Length; i++)
+                            {
+                                if (strings[i].Contains("CODE"))
+                                {
+                                    code = msgCode[1].Split(crcs_split_2)[i];
+                                    break;
+                                }
+                            }
+                        }
+                        if (msgCode[0].Contains("MSG"))
+                        {
+                            for (int i = 0; i < strings.Length; i++)
+                            {
+                                if (strings[i] == "MSG")
+                                {
+                                    msg = msgCode[1].Split(crcs_split_2)[i];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
         public static string DataSetToDsStr(this DataSet ds)
         {
             var sb = new StringBuilder();
@@ -263,6 +326,19 @@ namespace ExtendPublic
                 }
             }
             return sb.ToString();
+        }
+
+        public static DataSet DsStrToDataSet(this string strContent, bool isNeedRemoveDictionaryKey)
+        {
+            if (isNeedRemoveDictionaryKey)
+            {
+                int index = strContent.IndexOf($"{crcs_split_2}{crcs_split_3}");
+                if (index >= 0)
+                {
+                    strContent = strContent.Substring(index + 2);
+                }
+            }
+            return DsStrToDataSet(strContent);
         }
 
         public static DataSet DsStrToDataSet(this string strContent)

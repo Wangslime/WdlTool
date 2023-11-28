@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option csharp_namespace = "WdlGrpcServer";
+
+package greet;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply);
+
+   // New method...
+  rpc SayGoodbye (GoodbyeRequest) returns (GoodbyeReply);
+}
+
+// The new request message
+message GoodbyeRequest {
+  string name = 1;
+}
+
+// The new response message
+message GoodbyeReply {
+  string message = 1;
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings.
+message HelloReply {
+  string message = 1;
+}

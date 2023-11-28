@@ -125,7 +125,7 @@ namespace WdlEventBus
         }
         public static void Publish<T>(string eventName)
         {
-            EventData<T> eventData = new EventData<T>() { EventName = eventName };
+            EventData<T> eventData = new EventData<T>() {EventName = eventName };
             Publish(eventData);
         }
         public static void Publish<T>(T t)
@@ -276,7 +276,7 @@ namespace WdlEventBus
         }
         public static Task PublishAsync<T>(string methodName, string eventName)
         {
-            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName };
+            EventData<T> eventData = new EventData<T>() { MethodName = methodName, EventName = eventName};
             return PublishAsync(eventData);
         }
         public static Task PublishAsync<T>(string methodName, string eventName, T t)
@@ -290,7 +290,7 @@ namespace WdlEventBus
         }
         private Task PrivatePublishAsync<T>(EventData<T> eventData)
         {
-            Task task = Task.Run(() => true);
+            Task task = Task.Run(()=> true);
             Type type = typeof(T);
             if (dicEventType.ContainsKey(type))
             {
@@ -488,7 +488,7 @@ namespace WdlEventBus
             EventData eventData = new EventData() { MethodName = methodName, Data = data };
             Publish(eventData);
         }
-        public static void Publish(string methodName, string eventName, object data)
+        public static void Publish(string methodName, string eventName,  object data)
         {
             EventData eventData = new EventData() { EventName = eventName, MethodName = methodName, Data = data };
             Publish(eventData);
