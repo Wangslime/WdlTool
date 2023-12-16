@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Xml.Linq;
 
 namespace BeckhoffPLC
 {
@@ -16,6 +17,7 @@ namespace BeckhoffPLC
 
         Dictionary<string, List<ExcelInfo>> dicInfoList = new Dictionary<string, List<ExcelInfo>>();
         Dictionary<string, dynamic> dicPropertyValue = new Dictionary<string, dynamic>();
+        Dictionary<Type, List<string>> Groups = new Dictionary<Type, List<string>>();
         public async Task<bool> Initial()
         {
             List<string> list = MiniExcel.GetSheetNames(filePath);
@@ -42,7 +44,6 @@ namespace BeckhoffPLC
                 {
                     dicInfoList.Add(item.Name + "Class", new List<ExcelInfo>() { new ExcelInfo() { Name = item.Name, Type = item.Type, Description = item.Description } });
                     item.Type = item.Name + "Class";
-
                     dicInfoList.Remove(item.Name);
                 }
             }
@@ -51,9 +52,11 @@ namespace BeckhoffPLC
                 //根据Excel生成动态程序集，包括各种类和属性对象
                 typeInfoName = GetTypeByTypeName("Global_Variables", "Global_Variables", dicInfoList["Global_Variables"]);
                 dicPropertyValue.Add("Global_Variables", typeInfoName.Value);
+
+                PropertyInfo[] propertyInfos = typeInfoName.Value.GetType().GetProperties();
+                Groups = GetPropertyInfos(typeInfoName.Value);
+                await GetExcelParameter(typeInfoName.Value, null);
             }
-
-
             string code = GenerateCodeFromAssembly(Dynamic.assemblyBuilder);
 
             //C# 字符串代码生成程序集实体程序集
@@ -72,6 +75,135 @@ namespace BeckhoffPLC
             return true;
         }
 
+        public Dictionary<Type, List<string>> GetPropertyInfos(dynamic obj, string name = "")
+        {
+            Dictionary<Type, List<string>> propertyList = new Dictionary<Type, List<string>>();
+            PropertyInfo[] propertyInfos = obj.GetType().GetProperties();
+            foreach (var item in propertyInfos)
+            {
+                object valueObj = item.GetValue(obj);
+                if (dicInfoList.ContainsKey(item.PropertyType.Name))
+                {
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        if (propertyList.ContainsKey(item.PropertyType))
+                        {
+                            propertyList[item.PropertyType].Add(name);
+                        }
+                        else
+                        {
+                            propertyList.Add(item.PropertyType, new List<string>() { name });
+                        }
+                    }
+                    if (propertyList.ContainsKey(item.PropertyType))
+                    {
+
+                        propertyList[item.PropertyType].Add(item.Name);
+                    }
+                    else
+                    {
+                        propertyList.Add(item.PropertyType, new List<string>() { item.Name });
+                    }
+
+                    Dictionary<Type, List<string>> keyValuePairs = GetPropertyInfos(valueObj, item.Name);
+                    foreach (var keyValuePair in keyValuePairs)
+                    {
+                        if (propertyList.ContainsKey(keyValuePair.Key))
+                        {
+                            propertyList[keyValuePair.Key].AddRange(keyValuePair.Value);
+                        }
+                        else
+                        {
+                            propertyList.Add(keyValuePair.Key, keyValuePair.Value);
+                        }
+                    }
+                }
+            }
+            return propertyList;
+        }
+
+
+        public async Task GetExcelParameter(dynamic obj, string name)
+        {
+            PropertyInfo[] propertyInfos = obj.GetType().GetProperties();
+            foreach (var item in propertyInfos)
+            {
+                string itemName = item.Name;
+                if (!string.IsNullOrEmpty(name))
+                {
+                    itemName = name;
+                }
+                object valueObj = item.GetValue(obj);
+                if (dicInfoList.ContainsKey(item.PropertyType.Name))
+                {
+                    await GetExcelParameter(item.GetValue(obj), item.Name);
+
+                    foreach (var group in Groups)
+                    {
+                        if (group.Key == item.PropertyType)
+                        {
+                            List<string> propertyInfos1 = group.Value;
+
+                            if (propertyInfos1 != null && propertyInfos1.Any())
+                            {
+                                ExcelInfo excelInfo = new ExcelInfo();
+                                Dictionary<string, dynamic> dicProperty = new Dictionary<string, dynamic>();
+                                PropertyInfo[] excelInfoPropertyInfos = excelInfo.GetType().GetProperties();
+                                foreach (var property in excelInfoPropertyInfos)
+                                {
+                                    if (!dicProperty.ContainsKey(property.Name))
+                                    {
+                                        dicProperty.Add(property.Name, property.PropertyType);
+                                    }
+                                }
+                                foreach (var property in propertyInfos1)
+                                {
+                                    if (!dicProperty.ContainsKey(property))
+                                    {
+                                        dicProperty.Add(property, typeof(string));
+                                    }
+                                }
+                                Type type = dicProperty.GetDynamicType();
+                                if (type != null)
+                                {
+                                    var infoList = await QueryExcelByType(type, filePath, item.PropertyType.Name);
+                                    if (infoList != null)
+                                    {
+                                        PropertyInfo[] propertyInfoArr = item.PropertyType.GetProperties();
+                                        try
+                                        {
+                                            foreach (dynamic info in infoList)
+                                            {
+                                                if (!string.IsNullOrEmpty(info.Name))
+                                                {
+                                                    foreach (var propertyInfo in propertyInfoArr)
+                                                    {
+                                                        if (propertyInfo.Name == info.Name)
+                                                        {
+                                                            object? obj1 = info?.GetType()?.GetProperty(itemName)?.GetValue(info);
+                                                            if (obj1 != null)
+                                                            {
+                                                                if (!string.IsNullOrEmpty(obj1.ToString()))
+                                                                {
+                                                                    propertyInfo.SetValue(valueObj, Convert.ChangeType(obj1, propertyInfo.PropertyType));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
 
         /// <summary>
@@ -120,9 +252,9 @@ namespace BeckhoffPLC
                     sb.Append("/// </summary>");
                     dynamic obj1 = property.GetValue(obj);
                     string Unmanaged = GetUnmanagedType(obj1);
+                    sb.Append('\n');
                     if (!string.IsNullOrEmpty(Unmanaged))
                     {
-                        sb.Append('\n');
                         sb.Append(Unmanaged);
                     }
                     sb.Append($"public {property.PropertyType.FullName} {property.Name}");
@@ -273,17 +405,23 @@ namespace BeckhoffPLC
         /// <returns></returns>
         public async Task<dynamic> QueryExcelByType(Type type, string filePath, string sheetName)
         {
-            // 通过反射获取泛型定义并使用 MakeGenericType 方法创建具体泛型类型
-            Type genericType = typeof(MyGenericClass<>).MakeGenericType(type);
-            // 实例化泛型类
-            dynamic? instance = Activator.CreateInstance(genericType);
-            // 调用泛型方法
-            //MethodInfo methodInfo = genericType.GetMethod("MyMethod");
-            //dynamic rest = methodInfo.Invoke(instance, new object[] { filePath, sheetName });
-            dynamic task = instance?.MyMethod(filePath, sheetName);
-            if (task is Task) return null;
-            dynamic result = await task;
-            return result;
+            try
+            {
+                // 通过反射获取泛型定义并使用 MakeGenericType 方法创建具体泛型类型
+                Type genericType = typeof(MyGenericClass<>).MakeGenericType(type);
+                // 实例化泛型类
+                dynamic? instance = Activator.CreateInstance(genericType);
+                // 调用泛型方法
+                //MethodInfo methodInfo = genericType.GetMethod("MyMethod");
+                //dynamic rest = methodInfo.Invoke(instance, new object[] { filePath, sheetName });
+                dynamic task = instance?.MyMethod(filePath, sheetName);
+                dynamic result = await task;
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -449,17 +587,25 @@ namespace BeckhoffPLC
 
     public class TypeInfoName
     {
-        AlarmClass Alarm = new AlarmClass();
-
         public string Name { get; set; } = "";
         public dynamic Value { get; set; }
     }
 
     public class MyGenericClass<T> where T : class, new()
     {
-        public Task<IEnumerable<T>> MyMethod(string filePath, string sheetName) 
+        public async Task<IEnumerable<T>> MyMethod(string filePath, string sheetName) 
         {
-            return MiniExcel.QueryAsync<T>(filePath, sheetName);
+            try
+            {
+                var ret = await MiniExcel.QueryAsync<T>(filePath, sheetName);
+                return ret;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+            
         }
     }
 }

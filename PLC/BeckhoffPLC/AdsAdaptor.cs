@@ -1,6 +1,4 @@
-﻿using MyAssembly;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using TwinCAT.Ads;
@@ -50,7 +48,7 @@ namespace BeckhoffPLC
             if (IsConnected)
             {
                 Dictionary<int, Type> plcDataTypeHandle = new Dictionary<int, Type>();
-                Type type = typeof(Global_Variables);
+                Type type = null;//typeof(Global_Variables);
                 PropertyInfo[] properties = type.GetProperties();
                 foreach (PropertyInfo propertyInfo in properties)
                 {
@@ -60,7 +58,6 @@ namespace BeckhoffPLC
                         Type type1 = propertyInfo.PropertyType;
                         if (!type.Assembly.GetTypes().Contains(type1))
                         {
-
                             dynamic obj1 = client.ReadAny(notifyHandle, type1);
                         }
                         else

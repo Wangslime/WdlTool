@@ -55,7 +55,15 @@ namespace BeckhoffPLC
                 {
                     foreach (var item in dicProperty)
                     {
-                        Type type = item.Value.GetType();
+                        Type type = null;
+                        if (item.Value is Type)
+                        {
+                            type = item.Value;
+                        }
+                        else
+                        {
+                            type = item.Value.GetType();
+                        }
                         typeBuilder.SetProperty(item.Key, type);
                     }
                 }
