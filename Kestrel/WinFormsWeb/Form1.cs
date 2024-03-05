@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using System.Diagnostics;
 using System.Text;
 using Zack.ComObjectHelpers;
 
@@ -20,7 +21,7 @@ namespace WinFormsWeb
             this.webhost = new WebHostBuilder()
                 .UseKestrel()
                 .Configure(ConfigureWeb)
-                .UseUrls("http://*.80")
+                .UseUrls("http://*:50001")
                 .Build();
             this.webhost.RunAsync();//一部运行Kestrel Web服务
 
@@ -32,6 +33,8 @@ namespace WinFormsWeb
             this.webhost.StopAsync();
             this.webhost.WaitForShutdown();
             comRef.Dispose();
+
+            Process.GetCurrentProcess().Kill();
         }
 
         private void ConfigureWeb(IApplicationBuilder app)
@@ -47,15 +50,17 @@ namespace WinFormsWeb
             var req = context.Request;
             var resp = context.Response;
             string path = req.Path.Value;
-            if (path == "/hello")
+            if (path == "/Previous")
             {
                 resp.StatusCode = 200;
-                await resp.WriteAsync("hello wang");
+                T(T(this.presentation.SlideShowWindow).View).Previous();
+                await resp.WriteAsync("111");
             }
-            else if (path == "/who")
+            else if (path == "/Next")
             {
                 resp.StatusCode = 200;
-                await resp.WriteAsync("hello who? long");
+                T(T(this.presentation.SlideShowWindow).View).Next();
+                await resp.WriteAsync("111");
             }
             else
             {
@@ -65,8 +70,11 @@ namespace WinFormsWeb
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            button1_Click(sender, e);
 
+            this.WindowState = FormWindowState.Minimized;
         }
+
 
         dynamic T(dynamic obj)
         {
@@ -78,7 +86,7 @@ namespace WinFormsWeb
             app.Visible = true;
 
             dynamic presentations = T(app.Presentations);
-            string pathFile = @"C:\Users\10844\Desktop\新建 PPTX 演示文稿.pptx";
+            string pathFile = @"C:\Users\Lenovo\Desktop\软件技术部-02339-王定龙.pptx";
             presentation = T(presentations.Open(pathFile));
             T(presentation.SlideShowSettings).Run();
         }

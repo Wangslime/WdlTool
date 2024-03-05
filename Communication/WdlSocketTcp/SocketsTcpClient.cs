@@ -13,10 +13,12 @@ namespace WdlSocketTcp
     public class SocketsTcpClient
     {
         private Socket socketClient = null;
-        private byte[] buffer => new byte[1024];
+        //private byte[] buffer => new byte[1024];
 
         public event Func<string, string> ReceiveEventMsg;
         public event Action<Exception> LogError;
+        public Encoding encoding = Encoding.UTF8;
+        public int byteLength = 1024;
 
         CancellationTokenSource cts = new CancellationTokenSource();
         public bool Start(string ip = "127.0.0.1", int port = 10000)
@@ -85,8 +87,9 @@ namespace WdlSocketTcp
             {
                 try
                 {
+                    byte[] buffer = new byte[byteLength];
                     int receiveLen = socketClient.Receive(buffer);
-                    string receiveMsg = Encoding.UTF8.GetString(buffer, 0, receiveLen);
+                    string receiveMsg = encoding.GetString(buffer, 0, receiveLen);
                     //Console.WriteLine(string.Format("收到服务器消息:" + receiveMsg));
                     receiveMsg = ReceiveEventMsg?.Invoke(receiveMsg);
                     if (!string.IsNullOrEmpty(receiveMsg)) 
@@ -113,7 +116,7 @@ namespace WdlSocketTcp
         {
             if (socketClient != null && socketClient.Connected)
             {
-                return socketClient.Send(Encoding.UTF8.GetBytes(msg)) > 0;
+                return socketClient.Send(encoding.GetBytes(msg)) > 0;
             }
             return false;
         }

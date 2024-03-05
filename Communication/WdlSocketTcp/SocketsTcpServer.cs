@@ -17,6 +17,8 @@ namespace WdlSocketTcp
         public event Action<string> ClientConnect;
         public event Action<string> ClientDisConnect;
         public event Action<Exception> LogError;
+        public Encoding encoding = Encoding.UTF8;
+        public int byteLength = 1024;
         public void Close()
         {
             foreach (var item in dic.Values)
@@ -35,7 +37,7 @@ namespace WdlSocketTcp
             {
                 if (dic.ContainsKey(point) && dic[point].Connected)
                 {
-                    return dic[point].Send(Encoding.UTF8.GetBytes(data)) > 0;
+                    return dic[point].Send(encoding.GetBytes(data)) > 0;
                 }
                 return false;
             }
@@ -54,9 +56,9 @@ namespace WdlSocketTcp
                                                                     //服务端Socket定义
             Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Bind(point); //绑定IP
-            socket.Listen(100);//启动监听。最大监听数,同一个时间点过来10个客户端，排队
+            socket.Listen(100);//启动监听。最大监听数,同一个时间点过来100个客户端，排队
             Console.WriteLine("服务器开始监听");
-            Task.Run(() => { AcceptInfo(socket); }, cts.Token);
+            Task.Factory.StartNew(() => { AcceptInfo(socket); }, TaskCreationOptions.LongRunning);
         }
 
         private void AcceptInfo(Socket socket)
@@ -78,7 +80,8 @@ namespace WdlSocketTcp
                     }
                     dic.TryAdd(point, clientSocket);
                     //接收消息
-                    Task.Run(() => { ReceiveMsg(clientSocket); }, cts.Token);
+                    
+                    Task.Factory.StartNew(() => { ReceiveMsg(clientSocket); }, TaskCreationOptions.LongRunning);
                 }
                 catch (Exception ex)
                 {
@@ -96,24 +99,25 @@ namespace WdlSocketTcp
                 try
                 {
                     //定义byte数组存放从客户端接收过来的数据
-                    byte[] buffer = new byte[1024];
+                    byte[] buffer = new byte[byteLength];
                     int n = clientSocket.Receive(buffer);//将接收过来的数据放到buffer中，并返回实际接受数据的长度
                     if (n == 0)
                     {
                         string point = clientSocket.RemoteEndPoint.ToString();
                         ClientDisConnect?.Invoke(point);
+                        dic.TryRemove(point, out _);
                         break;
                     }
                     else 
                     {
                         //将字节转换成字符串
-                        string words = Encoding.UTF8.GetString(buffer, 0, n);
+                        string words = encoding.GetString(buffer, 0, n);
                         //Console.WriteLine(clientSocket.RemoteEndPoint.ToString() + ":" + words);
-                        //byte[] msg = Encoding.UTF8.GetBytes(words);
+                        //byte[] msg = encoding.GetBytes(words);
                         words = ReceiveClientMsg?.Invoke(words);
                         if (!string.IsNullOrEmpty(words))
                         {
-                            clientSocket.Send(Encoding.UTF8.GetBytes(words));//发送数据，字节数组
+                            clientSocket.Send(encoding.GetBytes(words));//发送数据，字节数组
                         }
                     }
                 }

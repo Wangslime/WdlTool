@@ -136,7 +136,7 @@ namespace WdlMqttAdaptor
                 var msg = new MqttApplicationMessage()
                 {
                     Topic = topic,
-                    Payload = Encoding.UTF8.GetBytes(content),
+                    Payload = Encoding.Default.GetBytes(content),
                     //QOS 消息等级
                     QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce,
                     Retain = false

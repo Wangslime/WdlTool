@@ -1,8 +1,10 @@
-﻿namespace TestMainServer
+﻿using WdlSocketTcp;
+
+namespace TestMainServer
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
 
@@ -13,6 +15,22 @@
             //webSocketServer.ReceiveEventMsg += OnReceiveEventMsg;
             //webSocketServer.Start(3000);
             #endregion
+
+            #region TcpServer
+            SocketsTcpServer socketsTcpServer = new SocketsTcpServer(30000);
+            socketsTcpServer.ReceiveClientMsg += SocketsTcpServer_ReceiveClientMsg;
+
+            while (true) 
+            {
+                await Task.Delay(1000);
+            }
+            #endregion
+        }
+
+        private static string SocketsTcpServer_ReceiveClientMsg(string arg)
+        {
+            Console.WriteLine(arg);
+            return "1";
         }
 
         private static string OnReceiveEventMsg(string arg)

@@ -21,7 +21,7 @@ namespace WdlMqttAdaptor
         /// 打开MQTT Server 服务
         /// </summary>
         /// <param name="port">端口号：默认为1883</param>
-        public async Task StartMqttServer(CancellationToken token, int port = 10086)
+        public async Task StartMqttServer(CancellationToken token, int port = 90000)
         {
             servicePort = port;
             LogEvent?.Invoke("===启动客户端MQTT===");
@@ -57,7 +57,7 @@ namespace WdlMqttAdaptor
         {
             if (mqttService == null || !mqttService.IsStarted)
             {
-                LogEvent?.Invoke("===启动客户端MQTT===");
+                LogEvent?.Invoke("===启动服务端MQTT===");
                 MqttServerOptionsBuilder optionsBuilder = new MqttServerOptionsBuilder();
                 optionsBuilder.WithDefaultEndpoint();
                 optionsBuilder.WithDefaultEndpointPort(port); // 设置 服务端 端口号

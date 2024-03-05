@@ -30,7 +30,7 @@ namespace WdlWebSocket
             bool isSuccess = asyncResult.AsyncWaitHandle.WaitOne(timeout, true);
             if (isSuccess && webSocket.State == WebSocketState.Open)
             {
-                Task.Run(() => { OnIsOpenReceiveMsg(); }, cts.Token);
+                Task.Factory.StartNew(async () => { await OnReceiveMsg(); }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
                 return true;
             }
             return false;
@@ -124,31 +124,7 @@ namespace WdlWebSocket
             }
         }
 
-        private async void OnIsOpenReceiveMsg()
-        {
-            while (!cts.Token.IsCancellationRequested)
-            {
-                try
-                {
-                    if (ReceiveEventMsg != null)
-                    {
-                        _ = Task.Run(() => { OnReceiveMsg(); });
-                        break;
-                    }
-                }
-                catch (Exception)
-                {
-                    _ = Task.Run(() => { OnReceiveMsg(); });
-                    break;
-                }
-                finally
-                {
-                    await Task.Delay(1000);
-                }
-            }
-        }
-
-        private async void OnReceiveMsg()
+        private async Task OnReceiveMsg()
         {
             while (!cts.Token.IsCancellationRequested)
             {

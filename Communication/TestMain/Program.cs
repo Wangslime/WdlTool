@@ -7,12 +7,11 @@ namespace TestMainClient
     internal class Program
     {
         static ConcurrentQueue<string> queuePlcAdaptor = new ConcurrentQueue<string>();
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             BeckhoffPlcData beckhoffPlcData = new BeckhoffPlcData();
-            await beckhoffPlcData.Initial();
-
-
+            Task.Run(async () => { await beckhoffPlcData.Initial(); });
+            
 
             //List<dynamic> list = new List<dynamic>();
             //for (int i = 0; i < 10; i++)
