@@ -6,3 +6,5 @@ bin/
 obj/
 /.vs
 /RFIDTool/.vs/RFIDTool/FileContentIndex
+/WpfBaseFrame/WpfApp1/.vs
+/WpfBaseFrame/WpfApp2/.vs
