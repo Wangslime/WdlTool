@@ -9,6 +9,8 @@ namespace WdlProxyAOP
     {
         public T _Instance = default;
 
+        List<FilterAttribute> clssFilters = typeof(T).GetCustomAttributes<FilterAttribute>(true).ToList();
+
         protected override object Invoke(MethodInfo targetMethod, object[] args)
         {
             return Process(_Instance, targetMethod, args);
@@ -18,20 +20,19 @@ namespace WdlProxyAOP
         {
             object execResult = null;
 
-            List<FilterAttribute> filters = null;
-            if (instance != null && instance.GetType() != null && instance.GetType().GetMethod(targetMethod.Name) != null)
+            List<FilterAttribute> filters = clssFilters;
+            if (filters == null)
             {
-                filters = instance.GetType().GetMethod(targetMethod.Name).GetCustomAttributes<FilterAttribute>(true).ToList();
-
-                List<FilterAttribute> clssFilters = instance.GetType().GetCustomAttributes<FilterAttribute>(true).ToList();
-                foreach (FilterAttribute filterAttribute in clssFilters)
+                filters = new List<FilterAttribute>();
+            }
+            if (instance != null && typeof(T) != null && typeof(T).GetMethod(targetMethod.Name) != null)
+            {
+                List<FilterAttribute> MethodInfofilters = typeof(T).GetMethod(targetMethod.Name).GetCustomAttributes<FilterAttribute>(true).ToList();
+                foreach (FilterAttribute filterAttribute in MethodInfofilters)
                 {
                     if (!filters.Any(p=> p.TypeId == filterAttribute.TypeId))
                     {
-                        if (filters != null)
-                        {
-                            filters.Add(filterAttribute);
-                        }
+                        filters?.Add(filterAttribute);
                     }
                 }
             }
@@ -50,13 +51,13 @@ namespace WdlProxyAOP
                 {
                     execBeforeFilters.ForEach(f => f.Execute<T>(instance, targetMethod, null));
                 }
-                var mParams = targetMethod.GetParameters();
-                object[] newArgs = new object[args.Length];
-                for (int i = 0; i < mParams.Length; i++)
-                {
-                    newArgs[i] = Convert.ChangeType(args[i], mParams[i].ParameterType);
-                }
-                execResult = targetMethod.Invoke(instance, newArgs);
+                //var mParams = targetMethod.GetParameters();
+                //object[] newArgs = new object[args.Length];
+                //for (int i = 0; i < mParams.Length; i++)
+                //{
+                //    newArgs[i] = Convert.ChangeType(args[i], mParams[i].ParameterType);
+                //}
+                execResult = targetMethod.Invoke(instance, args);
                 if (execBeforeFilters != null && execBeforeFilters.Count > 0)
                 {
                     execAfterFilters.ForEach(f => f.Execute<T>(instance, targetMethod, execResult));
@@ -81,6 +82,10 @@ namespace WdlProxyAOP
             FieldInfo fieldInfo = tProxy.GetType().GetField("_Instance");
             fieldInfo.SetValue(tProxy, t);
             return tProxy;
+
+            //dynamic tProxy = DispatchProxy.Create<T, MyProxy<T>>();
+            //tProxy._Instance = t;
+            //return tProxy;
         }
     }
 }

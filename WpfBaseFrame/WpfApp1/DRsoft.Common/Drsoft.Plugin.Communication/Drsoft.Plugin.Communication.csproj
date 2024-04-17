@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0-windows</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Drsoft.Common.Library\Drsoft.Common.Library.csproj" />
+    <ProjectReference Include="..\Drsoft.ConfigMamager\Drsoft.ConfigMamager.csproj" />
+    <ProjectReference Include="..\Drsoft.Plugin.ICommunication\Drsoft.Plugin.ICommunication.csproj" />
+  </ItemGroup>
+
+</Project>

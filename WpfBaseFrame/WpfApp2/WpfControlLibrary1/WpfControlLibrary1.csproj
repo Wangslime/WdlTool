@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\主题框架.png" />
+	  <None Remove="Resources\刷头.png" />
+	  <None Remove="Resources\动子.png" />
+	  <None Remove="Resources\动子托盘.png" />
+	  <None Remove="Resources\半片.png" />
+	  <None Remove="Resources\半片NG.png" />
+	  <None Remove="Resources\印刷机.png" />
+	  <None Remove="Resources\印刷机横杠.png" />
+	  <None Remove="Resources\横线.png" />
+	  <None Remove="Resources\竖线.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\主题框架.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\刷头.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\动子.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\动子托盘.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\半片.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\半片NG.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\印刷机.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\印刷机横杠.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\横线.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	  <Resource Include="Resources\竖线.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Resource>
+	</ItemGroup>
+
+</Project>

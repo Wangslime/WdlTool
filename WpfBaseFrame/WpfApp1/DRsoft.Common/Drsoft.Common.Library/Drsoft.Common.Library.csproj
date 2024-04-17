@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DRsoft.Runtime.Core.DBService" Version="1.1.2.9" />
+		<PackageReference Include="DRsoft.Runtime.Core.EventBusLib" Version="1.1.2.9" />
+		<PackageReference Include="DRsoft.Runtime.Core.UIComponentLibrary" Version="1.1.2.9" />
+		<PackageReference Include="System.IO.Ports" Version="5.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="DRsoft.Runtime.Core.Nlog" Version="1.1.2.9" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="MahApps.Metro" Version="2.4.9" />
+		<PackageReference Include="MahApps.Metro.IconPacks" Version="4.11.0" />
+	</ItemGroup>
+</Project>

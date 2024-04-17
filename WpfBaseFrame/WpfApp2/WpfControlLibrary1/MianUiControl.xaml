@@ -1,0 +1,165 @@
+﻿<UserControl x:Class="WpfControlLibrary1.MianUiControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfControlLibrary1"
+             mc:Ignorable="d" 
+             d:DesignHeight="546" d:DesignWidth="1458" >
+    <Grid>
+        <!--皮带上的16张半片-->
+        <Grid>
+            <Image x:Name="halfSliceIn1" Source="/Resources/半片.png" Margin="27,279,1389,258" Visibility="Hidden" />
+            <Image x:Name="halfSliceIn2" Source="/Resources/半片.png" Margin="72,279,1344,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn3" Source="/Resources/半片.png" Margin="117,279,1299,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn4" Source="/Resources/半片.png" Margin="162,279,1254,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn5" Source="/Resources/半片.png" Margin="208,279,1208,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn6" Source="/Resources/半片.png" Margin="254,279,1162,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn7" Source="/Resources/半片.png" Margin="299,279,1117,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn8" Source="/Resources/半片.png" Margin="344,279,1072,258" Visibility="Hidden"/>
+
+            <Image x:Name="halfSliceOut1" Source="/Resources/半片.png" Margin="1070,279,346,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceOut2" Source="/Resources/半片.png" Margin="1115,279,301,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceOut3" Source="/Resources/半片.png" Margin="1161,279,255,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceOut4" Source="/Resources/半片.png" Margin="1207,279,209,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceOut5" Source="/Resources/半片.png" Margin="1253,279,163,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceOut6" Source="/Resources/半片.png" Margin="1298,279,118,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceOut7" Source="/Resources/半片.png" Margin="1344,279,72,258" Visibility="Hidden"/>
+            <Image x:Name="halfSliceOut8" Source="/Resources/半片.png" Margin="1389,279,27,258" Visibility="Hidden"/>
+        </Grid>
+        <!--动子3-->
+        <Grid x:Name="actuator3" Margin="397,335,962,37">
+            <Grid.RenderTransform>
+                <TranslateTransform X="400"/>
+            </Grid.RenderTransform>
+            <Grid x:Name="actuator3Slice" Margin="3,-56,3,221" Visibility="Hidden">
+                <Image Source="/Resources/半片.png" Margin="-24,0,24,0" />
+                <Image Source="/Resources/半片.png" Margin="23,0,-23,0" />
+            </Grid>
+            <Image x:Name="trayActuator3" Source="/Resources/动子托盘.png" Margin="0,-78,0,78">
+                <Image.RenderTransform>
+                    <TranslateTransform Y="22"/>
+                </Image.RenderTransform>
+            </Image>
+            <Image Source="/Resources/动子.png"/>
+        </Grid>
+        <!--动子4-->
+        <Grid x:Name="actuator4" Margin="397,335,962,37">
+            <Grid.RenderTransform>
+                <TranslateTransform X="566"/>
+            </Grid.RenderTransform>
+            <Grid x:Name="actuator4Slice" Margin="3,-56,3,221" Visibility="Hidden">
+                <Image Source="/Resources/半片.png" Margin="-24,0,24,0" />
+                <Image Source="/Resources/半片.png" Margin="23,0,-23,0" />
+            </Grid>
+            <Image x:Name="trayActuator4" Source="/Resources/动子托盘.png" Margin="0,-78,0,78">
+                <Image.RenderTransform>
+                    <TranslateTransform Y="22"/>
+                </Image.RenderTransform>
+            </Image>
+            <Image Source="/Resources/动子.png"/>
+        </Grid>
+
+        <!--刷头1-->
+        <Image x:Name="printing1" Source="/Resources/刷头.png" Margin="614,132,737,260">
+            <Image.RenderTransform>
+                <TranslateTransform Y="0"/>
+            </Image.RenderTransform>
+        </Image>
+        <!--刷头2-->
+        <Image x:Name="printing2" Source="/Resources/刷头.png" Margin="780,132,571,260">
+            <Image.RenderTransform>
+                <TranslateTransform Y="0"/>
+            </Image.RenderTransform>
+        </Image>
+
+        <!--主体框架-->
+        <Grid>
+            <Image Source="/Resources/主题框架.png" Margin="26,27,26,27"/>
+            <Image Source="/Resources/印刷机横杠.png" Margin="585,146,545,358"/>
+            <Image Source="/Resources/印刷机.png" Margin="625,62,584,364"/>
+            <Image Source="/Resources/竖线.png" Margin="1059,285,388,185"/>
+            <Image Source="/Resources/竖线.png" Margin="381,284,1054,184"/>
+        </Grid>
+
+        <!--抬料托盘-->
+        <Grid>
+            <Grid x:Name="liftingFeedArm1" Margin="261,269,1075,248">
+                <Grid.RenderTransform>
+                    <TranslateTransform X="200"/>
+                </Grid.RenderTransform>
+                <Image Source="/Resources/横线.png" Margin="-72,0,-21,0"/>
+                <Grid x:Name="liftingFeedArm1halfSlice" Margin="1,0,-1,0" Visibility="Hidden">
+                    <Image Source="/Resources/半片.png" Margin="-68,10,120,10"/>
+                    <Image Source="/Resources/半片.png" Margin="-22,10,74,10"/>
+                    <Image Source="/Resources/半片.png" Margin="25,10,27,10"/>
+                    <Image Source="/Resources/半片.png" Margin="69,10,-17,10"/>
+                </Grid>
+            </Grid>
+
+            <Grid x:Name="liftingFeedArm2" Margin="928,269,408,248">
+                <Grid.RenderTransform>
+                    <TranslateTransform X="200"/>
+                </Grid.RenderTransform>
+                <Image Source="/Resources/横线.png" Margin="-74,0,-19,0"/>
+                <Grid x:Name="liftingFeedArm2halfSlice" Visibility="Hidden" Margin="-5,0,5,0">
+                    <Image Source="/Resources/半片.png" Margin="-68,10,120,10"/>
+                    <Image Source="/Resources/半片.png" Margin="-22,10,74,10"/>
+                    <Image Source="/Resources/半片.png" Margin="25,10,27,10"/>
+                    <Image Source="/Resources/半片.png" Margin="69,10,-17,10"/>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <!--Ng盒子-->
+        <Grid Margin="1147,122,111,299">
+            <TextBlock Text="NG" FontSize="18" Foreground="Red" Margin="14,59,132,38"/>
+            <Image x:Name="halfSliceIn1Ng" Source="/Resources/半片NG.png" Margin="10,110,141,6"  Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn2Ng" Source="/Resources/半片NG.png" Margin="57,110,94,6" Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn3Ng" Source="/Resources/半片NG.png" Margin="10,97,141,19" Visibility="Hidden"/>
+            <Image x:Name="halfSliceIn4Ng" Source="/Resources/半片NG.png" Margin="57,97,94,19" Visibility="Hidden"/>
+        </Grid>
+
+        <!--视觉相机-->
+        <Grid>
+            <local:CameraControl x:Name="camera1" Margin="438,120,980,389"/>
+            <local:CameraControl x:Name="camera2" Margin="522,120,896,389"/>
+            <local:CameraControl x:Name="camera3" Margin="650,120,768,389"/>
+            <local:CameraControl x:Name="camera4" Margin="809,120,609,389"/>
+            <local:CameraControl x:Name="camera5" Margin="994,110,424,399"/>
+        </Grid>
+
+        <!--动子1-->
+        <Grid x:Name="actuator1" Margin="397,335,962,37">
+            <Grid.RenderTransform>
+                <TranslateTransform X="0"/>
+            </Grid.RenderTransform>
+            <Grid x:Name="actuator1Slice" Margin="3,-56,3,221" Visibility="Hidden">
+                <Image Source="/Resources/半片.png" Margin="-24,0,24,0" />
+                <Image Source="/Resources/半片.png" Margin="23,0,-23,0" />
+            </Grid>
+            <Image x:Name="trayActuator1" Source="/Resources/动子托盘.png" Margin="0,-78,0,78">
+                <Image.RenderTransform>
+                    <TranslateTransform Y="22"/>
+                </Image.RenderTransform>
+            </Image>
+            <Image Source="/Resources/动子.png"/>
+        </Grid>
+        <!--动子2-->
+        <Grid x:Name="actuator2" Margin="397,335,962,37">
+            <Grid.RenderTransform>
+                <TranslateTransform X="100"/>
+            </Grid.RenderTransform>
+            <Grid x:Name="actuator2Slice" Margin="3,-56,3,221" Visibility="Hidden">
+                <Image Source="/Resources/半片.png" Margin="-24,0,24,0" />
+                <Image Source="/Resources/半片.png" Margin="23,0,-23,0" />
+            </Grid>
+            <Image x:Name="trayActuator2" Source="/Resources/动子托盘.png" Margin="0,-78,0,78">
+                <Image.RenderTransform>
+                    <TranslateTransform Y="22"/>
+                </Image.RenderTransform>
+            </Image>
+            <Image Source="/Resources/动子.png"/>
+        </Grid>
+    </Grid>
+</UserControl>

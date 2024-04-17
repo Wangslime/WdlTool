@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DRsoft.CameraVisual\Client\DRSoft.Plugin.CameraVisual\DRSoft.Plugin.CameraVisual.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.Common.Library\Drsoft.Common.Library.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.ConfigMamager\Drsoft.ConfigMamager.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.Plugin.ICommunication\Drsoft.Plugin.ICommunication.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.Plugin.PublicExtend\Drsoft.Plugin.PublicExtend.csproj" />
+    <ProjectReference Include="..\..\DRsoft.PowerMeter\Drsoft.PowerMeter.Com\Drsoft.PowerMeter.Com.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -3,10 +3,31 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:local="clr-namespace:WpfApp1" 
+        xmlns:user="clr-namespace:WpfApp1.DrUsercont"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid>
+            <TabControl>
+                <TabItem Header="进 料">
+                    <user:InBeltParamUserControl>
 
+                    </user:InBeltParamUserControl>
+                </TabItem>
+                <TabItem Header="出 料">
+
+                </TabItem>
+                <TabItem Header="加工台面">
+
+                </TabItem>
+                <TabItem Header="UVW烘干">
+
+                </TabItem>
+                <TabItem Header="其它">
+
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </Window>

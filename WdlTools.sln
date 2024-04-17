@@ -83,9 +83,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WdlModbusTcp", "Communicati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WdlSerialPort", "WdlSerialPort\WdlSerialPort.csproj", "{7683C8AE-111F-4175-B4CF-840FF8BD9C79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSerialConsoleApp1", "Communication\TestSerialConsoleApp1\TestSerialConsoleApp1.csproj", "{F4148BDC-0D1B-4A69-A8AB-B83D658C48A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestSerialConsoleApp1", "Communication\TestSerialConsoleApp1\TestSerialConsoleApp1.csproj", "{F4148BDC-0D1B-4A69-A8AB-B83D658C48A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSerialConsoleApp2", "Communication\TestSerialConsoleApp2\TestSerialConsoleApp2.csproj", "{74B4BE77-2156-48CD-9F6A-5D220E4313B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestSerialConsoleApp2", "Communication\TestSerialConsoleApp2\TestSerialConsoleApp2.csproj", "{74B4BE77-2156-48CD-9F6A-5D220E4313B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WpfBaseFrame", "WpfBaseFrame", "{5B378EB3-3ABE-44F3-A569-89D3F32A8952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DRsoft.Business\Drsoft.Business.Engine\Drsoft.Business.Engine.csproj" />
+    <ProjectReference Include="..\..\DRsoft.CameraVisual\Client\DRSoft.Plugin.CameraVisual\DRSoft.Plugin.CameraVisual.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.Common.Library\Drsoft.Common.Library.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.ConfigMamager\Drsoft.ConfigMamager.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.Plugin.CatchException\Drsoft.Plugin.CatchException.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.Plugin.Communication\Drsoft.Plugin.Communication.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.Plugin.ProxyAop\Drsoft.Plugin.ProxyAop.csproj" />
+    <ProjectReference Include="..\..\DRsoft.Common\Drsoft.Plugin.PublicExtend\Drsoft.Plugin.PublicExtend.csproj" />
+    <ProjectReference Include="..\..\DRsoft.PowerMeter\Drsoft.PowerMeter.Com\Drsoft.PowerMeter.Com.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsetting.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
