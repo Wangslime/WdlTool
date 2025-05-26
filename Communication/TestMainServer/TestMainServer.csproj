@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\WdlRabbitMq\WdlRabbitMq.csproj" />
     <ProjectReference Include="..\WdlSocketTcp\WdlSocketTcp.csproj" />
   </ItemGroup>
 
