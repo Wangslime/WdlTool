@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WdlSocketTcp", "Communicati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WdlHttpClientNet", "Communication\WdlHttpClientNet\WdlHttpClientNet.csproj", "{D6EBA022-C083-421F-90DC-DB5403A3CC02}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMq.Long", "WdlRabbitMq\RabbitMq.Long.csproj", "{C04B42EC-2514-4043-BA30-4082A9968222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Long.RabbitMq", "WdlRabbitMq\Long.RabbitMq.csproj", "{C04B42EC-2514-4043-BA30-4082A9968222}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WdlMqttAdaptor", "Communication\WdlMqttAdaptor\WdlMqttAdaptor.csproj", "{7D399908-D750-4078-86C8-3E94AA46DE5A}"
 EndProject
