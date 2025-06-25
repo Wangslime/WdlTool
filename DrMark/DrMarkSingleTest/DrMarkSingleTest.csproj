@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+	<UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DLL\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AxMMEdit_x64">
+      <HintPath>DLL\XcMark\AxMMEdit_x64.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMEdit_x64_1">
+      <HintPath>DLL\XcMark\AxMMEdit_x64_1.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMIO_x64">
+      <HintPath>DLL\XcMark\AxMMIO_x64.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMIO_x64_1">
+      <HintPath>DLL\XcMark\AxMMIO_x64_1.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMLensCal_x64">
+      <HintPath>DLL\XcMark\AxMMLensCal_x64.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMLensCal_x64_1">
+      <HintPath>DLL\XcMark\AxMMLensCal_x64_1.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMMark_x64">
+      <HintPath>DLL\XcMark\AxMMMark_x64.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMMark_x64_1">
+      <HintPath>DLL\XcMark\AxMMMark_x64_1.dll</HintPath>
+    </Reference>
+    <Reference Include="AxMMStatus_x64">
+      <HintPath>DLL\XcMark\AxMMStatus_x64.dll</HintPath>
+    </Reference>
+    <Reference Include="MMEditx641Lib">
+      <HintPath>DLL\XcMark\MMEditx641Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMEditx64Lib">
+      <HintPath>DLL\XcMark\MMEditx64Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMIOx641Lib">
+      <HintPath>DLL\XcMark\MMIOx641Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMIOx64Lib">
+      <HintPath>DLL\XcMark\MMIOx64Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMLensCalx641Lib">
+      <HintPath>DLL\XcMark\MMLensCalx641Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMLensCalx64Lib">
+      <HintPath>DLL\XcMark\MMLensCalx64Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMMarkx641Lib">
+      <HintPath>DLL\XcMark\MMMarkx641Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMMarkx64Lib">
+      <HintPath>DLL\XcMark\MMMarkx64Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="MMStatusx64Lib">
+      <HintPath>DLL\XcMark\MMStatusx64Lib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WdlAOP\WdlProxyAOP.csproj" />
+    <ProjectReference Include="..\WdlAOP\Long.ProxyAOP.csproj" />
   </ItemGroup>
 
 </Project>
