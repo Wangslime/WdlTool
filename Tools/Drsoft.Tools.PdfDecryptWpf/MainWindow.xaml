@@ -1,0 +1,79 @@
+﻿<Window
+    x:Class="Drsoft.Tools.PdfDecryptWpf.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Drsoft.Tools.PdfDecryptWpf"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Grid>
+        <TextBlock
+            Margin="60,100,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontSize="16"
+            Text="加密：" />
+        <StackPanel
+            Margin="60,120,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <TextBox
+                x:Name="EncryptPdfPath"
+                Width="500"
+                Height="32"
+                VerticalContentAlignment="Center"
+                FontSize="16" />
+            <Button
+                Width="80"
+                Height="32"
+                Margin="16,0,0,0"
+                Click="EncryptPath_Button_Click"
+                Content="文件路径"
+                FontSize="16" />
+            <Button
+                Width="60"
+                Height="32"
+                Margin="16,0,0,0"
+                Click="Encrypt_Button_Click"
+                Content="生成"
+                FontSize="16" />
+        </StackPanel>
+
+        <TextBlock
+            Margin="60,230,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            FontSize="16"
+            Text="解密：" />
+        <StackPanel
+            Margin="60,250,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <TextBox
+                x:Name="DecryptPdfPath"
+                Width="500"
+                Height="32"
+                VerticalContentAlignment="Center"
+                FontSize="16" />
+            <Button
+                Width="80"
+                Height="32"
+                Margin="16,0,0,0"
+                Click="DecryptPath_Button_Click"
+                Content="文件路径"
+                FontSize="16" />
+            <Button
+                Width="60"
+                Height="32"
+                Margin="16,0,0,0"
+                Click="Decrypt_Button_Click"
+                Content="显示"
+                FontSize="16" />
+        </StackPanel>
+    </Grid>
+</Window>

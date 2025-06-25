@@ -1,0 +1,6 @@
+{
+  "GlobalDataName": "Global_Variables",
+  "CreatAssemblyName": "Drsoft.DynamicPlcModel",
+  "LoadExcelPath": "D:\\DrLaser\\Git\\rdtechsoftwaredpt_std\\TCSE_XBC_HalfPiece\\DRsoft.Tools\\Drsoft.Tools.CreatAssemblyFileConsoleApp\\全新BC半片项目PLC交互结构体.xlsx",
+  "ClassFileSavePath": "D:\\DrLaser\\Git\\rdtechsoftwaredpt_std\\TCSE_XBC_HalfPiece\\DRsoft.Tools\\Drsoft.Tools.CreatAssemblyFileConsoleApp\\Global_Variables.cs"
+}
