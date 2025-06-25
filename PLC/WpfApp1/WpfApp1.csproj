@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BeckhoffPLC\BeckhoffPLC.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="TwinCAT.Ads">
       <HintPath>..\TwinCAT.Ads.dll</HintPath>
     </Reference>
