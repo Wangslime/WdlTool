@@ -10,6 +10,9 @@
     Background="Transparent"
     mc:Ignorable="d">
     <Grid>
-        <gif:GifImageControl Source="Resources/lockbg.gif" />
+        <gif:GifImageControl
+            DelayTime="0"
+            PlaybackRate="1"
+            Source="Resources/lockbg.gif" />
     </Grid>
 </Window>

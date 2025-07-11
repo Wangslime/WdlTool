@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using UserControl = System.Windows.Controls.UserControl;
@@ -22,6 +21,17 @@ public partial class GifImageControl : UserControl
     }
     public readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(string), typeof(GifImageControl));
 
+
+    [Bindable(true)]
+    [Category("Appearance")]
+    public int DelayTime
+    {
+        get { return (int)GetValue(DelayTimeProperty); }
+        set { SetValue(DelayTimeProperty, value); }
+    }
+    public readonly DependencyProperty DelayTimeProperty = DependencyProperty.Register("DelayTime", typeof(int), typeof(GifImageControl));
+
+
     [Bindable(true)]
     [Category("Appearance")]
     public float PlaybackRate
@@ -39,7 +49,8 @@ public partial class GifImageControl : UserControl
     bool IsSizeChanged = false;
     FrameDimension frameDimension = null;
     List<int> delays = new List<int>();
-    int frameCount = 0;
+    int[] frameSource = null;
+    int delayTime = 0;
 
     public GifImageControl()
     {
@@ -66,14 +77,21 @@ public partial class GifImageControl : UserControl
         {
             playbackPate = PlaybackRate;
         }
+        delayTime = DelayTime;
         Task.Run(() =>
         {
             try
             {
                 gifImage = Image.FromFile(gifPath);
                 frameDimension = new FrameDimension(gifImage.FrameDimensionsList[0]);
-                frameCount = gifImage.GetFrameCount(frameDimension);
-                for (int i = 0; i < frameCount; i++)
+                int frameCount = gifImage.GetFrameCount(frameDimension);
+                int[] source = new int[frameCount];
+                for (int i = 0; i < source.Length; i++)
+                {
+                    source[i] = i;
+                }
+                frameSource = SamplePercent(source, playbackPate);
+                for (int i = 0; i < frameSource.Length; i++)
                 {
                     foreach (PropertyItem prop in gifImage.PropertyItems)
                     {
@@ -81,12 +99,7 @@ public partial class GifImageControl : UserControl
                         {
                             // 解析4字节数据（小端序）
                             int delay = BitConverter.ToInt32(prop.Value, i * 4) * 10;
-                            int delay1 = (int)(delay / playbackPate);
-                            if (delay1 < 1)
-                            {
-                                delay1 = 1;
-                            }
-                            delays.Add(delay1); // 单位：毫秒（1/100秒 * 10 = 毫秒）
+                            delays.Add(delay); // 单位：毫秒（1/100秒 * 10 = 毫秒）
                             break;
                         }
                     }
@@ -97,6 +110,35 @@ public partial class GifImageControl : UserControl
             {
             }
         });
+    }
+    public int[] SamplePercent(int[] source, float playbackPate)
+    {
+        if (playbackPate <= 1)
+        {
+            return source;
+        }
+        playbackPate = 1 / playbackPate;
+        int sampleCount = (int)Math.Round(source.Length * playbackPate);
+        if (sampleCount == 0)
+            return new int[] { source[0] }; // 单元素数组取唯一值
+        if (sampleCount >= source.Length)
+            return source; // 取样数≥数组长度时返回全部
+
+        // 计算抽样步长（避免整数除法丢失精度）
+        double step = (double)source.Length / sampleCount;
+
+        // 等距取样
+        List<int> sampled = new List<int>();
+        double currentIndex = 0;
+
+        for (int i = 0; i < sampleCount; i++)
+        {
+            int index = (int)Math.Round(currentIndex);
+            sampled.Add(source[index]);
+            currentIndex += step;
+        }
+
+        return sampled.ToArray();
     }
 
     bool IsVisible = false;
@@ -116,22 +158,22 @@ public partial class GifImageControl : UserControl
         {
             try
             {
-                if (IsLoaded && IsSizeChanged && gifImage != null)
+                if (IsLoaded && IsSizeChanged && gifImage != null && frameSource != null)
                 {
-                    for (int i = 0; i < frameCount; i++)
+                    for (int i = 0; i < frameSource.Length; i++)
                     {
                         if (IsVisible)
                         {
                             if (IsLoaded && IsSizeChanged)
                             {
-                                stopwatch.Start();
-                                gifImage.SelectActiveFrame(frameDimension, i);
+                                stopwatch.Restart();
+                                gifImage.SelectActiveFrame(frameDimension, frameSource[i]);
                                 Bitmap frame = new Bitmap(gifImage);
                                 DrawShapes(frame);
                                 frame?.Dispose();
                                 frame = null;
                                 stopwatch.Stop();
-                                int delay = delays[i] - (int)stopwatch.ElapsedMilliseconds;
+                                int delay = delays[i] + delayTime - (int)stopwatch.ElapsedMilliseconds;
                                 if (delay >= 0)
                                 {
                                     await Task.Delay(delay);
