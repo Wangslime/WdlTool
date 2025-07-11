@@ -1,0 +1,15 @@
+<UserControl
+    x:Class="DRsoft.Runtime.Core.Long.GifImage.GifImageControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:DRsoft.Runtime.Core.Long.GifImage"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    mc:Ignorable="d">
+    <Grid>
+        <Canvas x:Name="canvas">
+            <Image x:Name="cameraImg" />
+        </Canvas>
+    </Grid>
+</UserControl>

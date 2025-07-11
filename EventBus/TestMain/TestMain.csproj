@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Test1\Test1.csproj" />
-    <ProjectReference Include="..\WdlEventBus\WdlEventBus.csproj" />
   </ItemGroup>
 
 </Project>
