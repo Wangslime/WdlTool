@@ -99,6 +99,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GifTestWpfApp", "WPFGIf\Gif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DRsoft.Runtime.Core.Long.GifImage", "WPFGIf\DRsoft.Runtime.Core.Long.GifImage\DRsoft.Runtime.Core.Long.GifImage.csproj", "{40101EE3-5268-4078-82E3-930DD6B9B04E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeletePath", "Tools\DeletePath\DeletePath.csproj", "{D07685EC-5C7B-EAFB-9BB2-9980F4776445}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -249,6 +251,10 @@ Global
 		{40101EE3-5268-4078-82E3-930DD6B9B04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40101EE3-5268-4078-82E3-930DD6B9B04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40101EE3-5268-4078-82E3-930DD6B9B04E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D07685EC-5C7B-EAFB-9BB2-9980F4776445}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D07685EC-5C7B-EAFB-9BB2-9980F4776445}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D07685EC-5C7B-EAFB-9BB2-9980F4776445}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D07685EC-5C7B-EAFB-9BB2-9980F4776445}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -289,6 +295,7 @@ Global
 		{0F0C3EEC-C405-CE3A-CE49-94DDB583A866} = {30CA5485-6FB6-44CE-A0A6-6970E2520868}
 		{D4654465-77DD-4905-950B-45D675EBBC00} = {18478B16-3B75-4E5F-A5AB-944A7F2437AB}
 		{40101EE3-5268-4078-82E3-930DD6B9B04E} = {18478B16-3B75-4E5F-A5AB-944A7F2437AB}
+		{D07685EC-5C7B-EAFB-9BB2-9980F4776445} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C976706-ECEF-4603-A3C0-CDA7BAF2A33E}
