@@ -101,6 +101,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DRsoft.Runtime.Core.Long.Gi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeletePath", "Tools\DeletePath\DeletePath.csproj", "{D07685EC-5C7B-EAFB-9BB2-9980F4776445}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halcon", "Halcon", "{711A92FF-33E7-4761-A9A4-8686BE3EABF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsHalconTest1", "Halcon\WinFormsHalconTest1\WinFormsHalconTest1.csproj", "{D705BB8C-30CE-4846-AA64-AE1A5A77D758}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -255,6 +259,10 @@ Global
 		{D07685EC-5C7B-EAFB-9BB2-9980F4776445}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D07685EC-5C7B-EAFB-9BB2-9980F4776445}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D07685EC-5C7B-EAFB-9BB2-9980F4776445}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D705BB8C-30CE-4846-AA64-AE1A5A77D758}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D705BB8C-30CE-4846-AA64-AE1A5A77D758}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D705BB8C-30CE-4846-AA64-AE1A5A77D758}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D705BB8C-30CE-4846-AA64-AE1A5A77D758}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -296,6 +304,7 @@ Global
 		{D4654465-77DD-4905-950B-45D675EBBC00} = {18478B16-3B75-4E5F-A5AB-944A7F2437AB}
 		{40101EE3-5268-4078-82E3-930DD6B9B04E} = {18478B16-3B75-4E5F-A5AB-944A7F2437AB}
 		{D07685EC-5C7B-EAFB-9BB2-9980F4776445} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{D705BB8C-30CE-4846-AA64-AE1A5A77D758} = {711A92FF-33E7-4761-A9A4-8686BE3EABF1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1C976706-ECEF-4603-A3C0-CDA7BAF2A33E}
